@@ -33,7 +33,7 @@ struct SwatchGalleryView: View {
                                         .foregroundStyle(.secondary)
                                 }
                                 RatingDisplayView(rating: swatch.rating)
-                                Text(swatch.dateTested.formatted(date: .abbreviated, time: .omitted))
+                                Text(swatch.dateTested.abbreviated)
                                     .font(.caption2)
                                     .foregroundStyle(.secondary)
                             }

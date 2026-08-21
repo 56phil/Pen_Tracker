@@ -21,7 +21,7 @@ struct SwatchDetailView: View {
                 if let paper = swatch.paper {
                     LabeledContent("Paper", value: "\(paper.brand) \(paper.lineName)")
                 }
-                LabeledContent("Date Tested", value: swatch.dateTested.formatted(date: .abbreviated, time: .omitted))
+                LabeledContent("Date Tested", value: swatch.dateTested.abbreviated)
                 HStack {
                     Text("Rating")
                     Spacer()
@@ -35,14 +35,7 @@ struct SwatchDetailView: View {
                 }
             }
 
-            if let photo = swatch.photo, let nsImage = NSImage(data: photo) {
-                Section("Photo") {
-                    Image(nsImage: nsImage)
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(maxHeight: 240)
-                }
-            }
+            PhotoSection(photo: swatch.photo, maxHeight: 240)
 
             Section {
                 Button("Delete Swatch", role: .destructive) {

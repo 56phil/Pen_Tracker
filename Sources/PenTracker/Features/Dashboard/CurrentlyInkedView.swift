@@ -31,7 +31,7 @@ struct CurrentlyInkedView: View {
                                     }
                                     Spacer()
                                 }
-                                Text("Filled \(inking.filledDate.formatted(date: .abbreviated, time: .omitted))")
+                                Text("Filled \(inking.filledDate.abbreviated)")
                                     .font(.caption2)
                                     .foregroundStyle(.secondary)
                                 Button("Empty") {

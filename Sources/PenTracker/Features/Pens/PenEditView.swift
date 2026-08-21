@@ -13,11 +13,7 @@ struct PenEditView: View {
     @State private var nibSizeOrTip = ""
     @State private var fillingMechanism = ""
     @State private var status: CollectionStatus = .inRotation
-    @State private var purchaseDate: Date = .now
-    @State private var hasPurchaseDate = false
-    @State private var priceText = ""
-    @State private var vendor = ""
-    @State private var purchaseURLText = ""
+    @State private var purchaseInfo = PurchaseInfoFormState()
     @State private var notes = ""
     @State private var photo: Data?
 
@@ -39,15 +35,7 @@ struct PenEditView: View {
                     }
                 }
 
-                Section("Purchase") {
-                    Toggle("Track Purchase Info", isOn: $hasPurchaseDate)
-                    if hasPurchaseDate {
-                        DatePicker("Date", selection: $purchaseDate, displayedComponents: .date)
-                        TextField("Price", text: $priceText)
-                        TextField("Vendor", text: $vendor)
-                        TextField("Purchase URL", text: $purchaseURLText)
-                    }
-                }
+                PurchaseInfoEditSection(state: $purchaseInfo)
 
                 Section("Notes") {
                     TextEditor(text: $notes).frame(minHeight: 80)
@@ -81,23 +69,12 @@ struct PenEditView: View {
         nibSizeOrTip = pen.nibSizeOrTip
         fillingMechanism = pen.fillingMechanism
         status = pen.status
-        if let date = pen.purchaseDate {
-            hasPurchaseDate = true
-            purchaseDate = date
-        }
-        if let price = pen.price {
-            priceText = price.priceText
-        }
-        vendor = pen.vendor ?? ""
-        purchaseURLText = pen.purchaseURL?.absoluteString ?? ""
+        purchaseInfo.load(from: pen)
         notes = pen.notes
         photo = pen.photo
     }
 
     private func save() {
-        let price = Decimal(priceText: priceText)
-        let url = purchaseURLText.isEmpty ? nil : URL(string: purchaseURLText)
-
         if let pen {
             pen.brand = brand
             pen.model = model
@@ -105,20 +82,17 @@ struct PenEditView: View {
             pen.nibSizeOrTip = nibSizeOrTip
             pen.fillingMechanism = fillingMechanism
             pen.status = status
-            pen.purchaseDate = hasPurchaseDate ? purchaseDate : nil
-            pen.price = hasPurchaseDate ? price : nil
-            pen.vendor = hasPurchaseDate ? vendor : nil
-            pen.purchaseURL = hasPurchaseDate ? url : nil
+            purchaseInfo.apply(to: pen)
             pen.notes = notes
             pen.photo = photo
         } else {
             let newPen = Pen(brand: brand, model: model, color: color,
                               nibSizeOrTip: nibSizeOrTip, fillingMechanism: fillingMechanism,
                               status: status,
-                              purchaseDate: hasPurchaseDate ? purchaseDate : nil,
-                              price: hasPurchaseDate ? price : nil,
-                              vendor: hasPurchaseDate ? vendor : nil,
-                              purchaseURL: hasPurchaseDate ? url : nil,
+                              purchaseDate: purchaseInfo.resolvedDate,
+                              price: purchaseInfo.resolvedPrice,
+                              vendor: purchaseInfo.resolvedVendor,
+                              purchaseURL: purchaseInfo.resolvedURL,
                               notes: notes, photo: photo)
             context.insert(newPen)
         }

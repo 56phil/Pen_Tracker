@@ -77,18 +77,7 @@ struct InkDetailView: View {
             }
 
             if let vendor = ink.vendor, !vendor.isEmpty {
-                Section("Purchase") {
-                    LabeledContent("Vendor", value: vendor)
-                    if let price = ink.price {
-                        LabeledContent("Price", value: price.formatted(.currency(code: "USD")))
-                    }
-                    if let date = ink.purchaseDate {
-                        LabeledContent("Date", value: date.formatted(date: .abbreviated, time: .omitted))
-                    }
-                    if let url = ink.purchaseURL {
-                        Link("Purchase Link", destination: url)
-                    }
-                }
+                PurchaseInfoView(vendor: vendor, price: ink.price, date: ink.purchaseDate, url: ink.purchaseURL)
             }
 
             if !ink.notes.isEmpty {
@@ -97,14 +86,7 @@ struct InkDetailView: View {
                 }
             }
 
-            if let photo = ink.photo, let nsImage = NSImage(data: photo) {
-                Section("Photo") {
-                    Image(nsImage: nsImage)
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(maxHeight: 200)
-                }
-            }
+            PhotoSection(photo: ink.photo)
         }
         .formStyle(.grouped)
         .navigationTitle("\(ink.brand) \(ink.colorName)")

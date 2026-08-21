@@ -15,11 +15,7 @@ struct InkEditView: View {
     @State private var volumeText = ""
     @State private var quantity = 1
     @State private var status: CollectionStatus = .inRotation
-    @State private var purchaseDate: Date = .now
-    @State private var hasPurchaseDate = false
-    @State private var priceText = ""
-    @State private var vendor = ""
-    @State private var purchaseURLText = ""
+    @State private var purchaseInfo = PurchaseInfoFormState()
     @State private var notes = ""
     @State private var photo: Data?
 
@@ -50,15 +46,7 @@ struct InkEditView: View {
                     }
                 }
 
-                Section("Purchase") {
-                    Toggle("Track Purchase Info", isOn: $hasPurchaseDate)
-                    if hasPurchaseDate {
-                        DatePicker("Date", selection: $purchaseDate, displayedComponents: .date)
-                        TextField("Price", text: $priceText)
-                        TextField("Vendor", text: $vendor)
-                        TextField("Purchase URL", text: $purchaseURLText)
-                    }
-                }
+                PurchaseInfoEditSection(state: $purchaseInfo)
 
                 Section("Notes") {
                     TextEditor(text: $notes).frame(minHeight: 80)
@@ -96,22 +84,12 @@ struct InkEditView: View {
         }
         quantity = ink.quantity
         status = ink.status
-        if let date = ink.purchaseDate {
-            hasPurchaseDate = true
-            purchaseDate = date
-        }
-        if let price = ink.price {
-            priceText = price.priceText
-        }
-        vendor = ink.vendor ?? ""
-        purchaseURLText = ink.purchaseURL?.absoluteString ?? ""
+        purchaseInfo.load(from: ink)
         notes = ink.notes
         photo = ink.photo
     }
 
     private func save() {
-        let price = Decimal(priceText: priceText)
-        let url = purchaseURLText.isEmpty ? nil : URL(string: purchaseURLText)
         let volume = Double(volumeText)
         let hex = colorHex.isEmpty ? nil : colorHex
 
@@ -124,20 +102,17 @@ struct InkEditView: View {
             ink.volumeML = volume
             ink.quantity = quantity
             ink.status = status
-            ink.purchaseDate = hasPurchaseDate ? purchaseDate : nil
-            ink.price = hasPurchaseDate ? price : nil
-            ink.vendor = hasPurchaseDate ? vendor : nil
-            ink.purchaseURL = hasPurchaseDate ? url : nil
+            purchaseInfo.apply(to: ink)
             ink.notes = notes
             ink.photo = photo
         } else {
             let newInk = Ink(brand: brand, lineName: lineName, colorName: colorName,
                               colorHex: hex, packageType: packageType, volumeML: volume,
                               quantity: quantity, status: status,
-                              purchaseDate: hasPurchaseDate ? purchaseDate : nil,
-                              price: hasPurchaseDate ? price : nil,
-                              vendor: hasPurchaseDate ? vendor : nil,
-                              purchaseURL: hasPurchaseDate ? url : nil,
+                              purchaseDate: purchaseInfo.resolvedDate,
+                              price: purchaseInfo.resolvedPrice,
+                              vendor: purchaseInfo.resolvedVendor,
+                              purchaseURL: purchaseInfo.resolvedURL,
                               notes: notes, photo: photo)
             context.insert(newInk)
         }

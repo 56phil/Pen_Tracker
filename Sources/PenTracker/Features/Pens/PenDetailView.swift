@@ -61,7 +61,7 @@ struct PenDetailView: View {
                             if inking.isCurrent {
                                 Text("Current").font(.caption).foregroundStyle(.green)
                             } else if let emptied = inking.emptiedDate {
-                                Text("Until \(emptied.formatted(date: .abbreviated, time: .omitted))")
+                                Text("Until \(emptied.abbreviated)")
                                     .font(.caption)
                                     .foregroundStyle(.secondary)
                             }
@@ -71,18 +71,7 @@ struct PenDetailView: View {
             }
 
             if let vendor = pen.vendor, !vendor.isEmpty {
-                Section("Purchase") {
-                    LabeledContent("Vendor", value: vendor)
-                    if let price = pen.price {
-                        LabeledContent("Price", value: price.formatted(.currency(code: "USD")))
-                    }
-                    if let date = pen.purchaseDate {
-                        LabeledContent("Date", value: date.formatted(date: .abbreviated, time: .omitted))
-                    }
-                    if let url = pen.purchaseURL {
-                        Link("Purchase Link", destination: url)
-                    }
-                }
+                PurchaseInfoView(vendor: vendor, price: pen.price, date: pen.purchaseDate, url: pen.purchaseURL)
             }
 
             if !pen.notes.isEmpty {
@@ -91,14 +80,7 @@ struct PenDetailView: View {
                 }
             }
 
-            if let photo = pen.photo, let nsImage = NSImage(data: photo) {
-                Section("Photo") {
-                    Image(nsImage: nsImage)
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(maxHeight: 200)
-                }
-            }
+            PhotoSection(photo: pen.photo)
         }
         .formStyle(.grouped)
         .navigationTitle("\(pen.brand) \(pen.model)")

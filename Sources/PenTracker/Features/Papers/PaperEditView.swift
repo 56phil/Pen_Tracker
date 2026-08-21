@@ -14,11 +14,7 @@ struct PaperEditView: View {
     @State private var format = ""
     @State private var quantity = 1
     @State private var status: CollectionStatus = .inRotation
-    @State private var purchaseDate: Date = .now
-    @State private var hasPurchaseDate = false
-    @State private var priceText = ""
-    @State private var vendor = ""
-    @State private var purchaseURLText = ""
+    @State private var purchaseInfo = PurchaseInfoFormState()
     @State private var notes = ""
     @State private var photo: Data?
 
@@ -41,15 +37,7 @@ struct PaperEditView: View {
                     }
                 }
 
-                Section("Purchase") {
-                    Toggle("Track Purchase Info", isOn: $hasPurchaseDate)
-                    if hasPurchaseDate {
-                        DatePicker("Date", selection: $purchaseDate, displayedComponents: .date)
-                        TextField("Price", text: $priceText)
-                        TextField("Vendor", text: $vendor)
-                        TextField("Purchase URL", text: $purchaseURLText)
-                    }
-                }
+                PurchaseInfoEditSection(state: $purchaseInfo)
 
                 Section("Notes") {
                     TextEditor(text: $notes).frame(minHeight: 80)
@@ -86,22 +74,12 @@ struct PaperEditView: View {
         format = paper.format
         quantity = paper.quantity
         status = paper.status
-        if let date = paper.purchaseDate {
-            hasPurchaseDate = true
-            purchaseDate = date
-        }
-        if let price = paper.price {
-            priceText = price.priceText
-        }
-        vendor = paper.vendor ?? ""
-        purchaseURLText = paper.purchaseURL?.absoluteString ?? ""
+        purchaseInfo.load(from: paper)
         notes = paper.notes
         photo = paper.photo
     }
 
     private func save() {
-        let price = Decimal(priceText: priceText)
-        let url = purchaseURLText.isEmpty ? nil : URL(string: purchaseURLText)
         let weight = Int(weightText)
         let finish = colorOrFinish.isEmpty ? nil : colorOrFinish
 
@@ -113,20 +91,17 @@ struct PaperEditView: View {
             paper.format = format
             paper.quantity = quantity
             paper.status = status
-            paper.purchaseDate = hasPurchaseDate ? purchaseDate : nil
-            paper.price = hasPurchaseDate ? price : nil
-            paper.vendor = hasPurchaseDate ? vendor : nil
-            paper.purchaseURL = hasPurchaseDate ? url : nil
+            purchaseInfo.apply(to: paper)
             paper.notes = notes
             paper.photo = photo
         } else {
             let newPaper = Paper(brand: brand, lineName: lineName, weightGSM: weight,
                                   colorOrFinish: finish, format: format, quantity: quantity,
                                   status: status,
-                                  purchaseDate: hasPurchaseDate ? purchaseDate : nil,
-                                  price: hasPurchaseDate ? price : nil,
-                                  vendor: hasPurchaseDate ? vendor : nil,
-                                  purchaseURL: hasPurchaseDate ? url : nil,
+                                  purchaseDate: purchaseInfo.resolvedDate,
+                                  price: purchaseInfo.resolvedPrice,
+                                  vendor: purchaseInfo.resolvedVendor,
+                                  purchaseURL: purchaseInfo.resolvedURL,
                                   notes: notes, photo: photo)
             context.insert(newPaper)
         }

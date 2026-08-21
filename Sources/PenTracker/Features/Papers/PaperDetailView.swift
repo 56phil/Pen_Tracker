@@ -43,18 +43,7 @@ struct PaperDetailView: View {
             }
 
             if let vendor = paper.vendor, !vendor.isEmpty {
-                Section("Purchase") {
-                    LabeledContent("Vendor", value: vendor)
-                    if let price = paper.price {
-                        LabeledContent("Price", value: price.formatted(.currency(code: "USD")))
-                    }
-                    if let date = paper.purchaseDate {
-                        LabeledContent("Date", value: date.formatted(date: .abbreviated, time: .omitted))
-                    }
-                    if let url = paper.purchaseURL {
-                        Link("Purchase Link", destination: url)
-                    }
-                }
+                PurchaseInfoView(vendor: vendor, price: paper.price, date: paper.purchaseDate, url: paper.purchaseURL)
             }
 
             if !paper.notes.isEmpty {
@@ -63,14 +52,7 @@ struct PaperDetailView: View {
                 }
             }
 
-            if let photo = paper.photo, let nsImage = NSImage(data: photo) {
-                Section("Photo") {
-                    Image(nsImage: nsImage)
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(maxHeight: 200)
-                }
-            }
+            PhotoSection(photo: paper.photo)
         }
         .formStyle(.grouped)
         .navigationTitle("\(paper.brand) \(paper.lineName)")

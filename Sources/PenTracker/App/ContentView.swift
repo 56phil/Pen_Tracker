@@ -11,20 +11,22 @@ struct ContentView: View {
             }
             .navigationTitle("PenTracker")
         } detail: {
-            switch selection {
-            case .dashboard:
-                CurrentlyInkedView()
-            case .pens:
-                PenListView()
-            case .inks:
-                InkListView()
-            case .papers:
-                PaperListView()
-            case .swatches:
-                SwatchGalleryView()
-            case nil:
-                Text("Select a section")
-                    .foregroundStyle(.secondary)
+            NavigationStack {
+                switch selection {
+                case .dashboard:
+                    CurrentlyInkedView()
+                case .pens:
+                    PenListView()
+                case .inks:
+                    InkListView()
+                case .papers:
+                    PaperListView()
+                case .swatches:
+                    SwatchGalleryView()
+                case nil:
+                    Text("Select a section")
+                        .foregroundStyle(.secondary)
+                }
             }
         }
     }

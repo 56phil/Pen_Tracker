@@ -51,6 +51,11 @@ struct PenDetailView: View {
                                 Text(inking.filledDate, style: .date)
                                     .font(.caption)
                                     .foregroundStyle(.secondary)
+                                if let notes = inking.notes, !notes.isEmpty {
+                                    Text(notes)
+                                        .font(.caption)
+                                        .foregroundStyle(.secondary)
+                                }
                             }
                             Spacer()
                             if inking.isCurrent {

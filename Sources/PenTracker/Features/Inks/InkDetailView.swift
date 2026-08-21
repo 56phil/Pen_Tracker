@@ -42,7 +42,14 @@ struct InkDetailView: View {
                 ForEach(sortedInkings) { inking in
                     if let pen = inking.pen {
                         HStack {
-                            Text("\(pen.brand) \(pen.model)")
+                            VStack(alignment: .leading) {
+                                Text("\(pen.brand) \(pen.model)")
+                                if let notes = inking.notes, !notes.isEmpty {
+                                    Text(notes)
+                                        .font(.caption)
+                                        .foregroundStyle(.secondary)
+                                }
+                            }
                             Spacer()
                             if inking.isCurrent {
                                 Text("Current").font(.caption).foregroundStyle(.green)

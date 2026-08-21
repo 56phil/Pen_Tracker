@@ -6,6 +6,8 @@ struct ImagePickerButton: View {
     @Binding var photo: Data?
     var label: String = "Choose Photo…"
 
+    @State private var loadErrorMessage: String?
+
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
             if let photo, let nsImage = NSImage(data: photo) {
@@ -23,6 +25,14 @@ struct ImagePickerButton: View {
                 }
             }
         }
+        .alert("Couldn't Load Photo", isPresented: Binding(
+            get: { loadErrorMessage != nil },
+            set: { if !$0 { loadErrorMessage = nil } }
+        ), presenting: loadErrorMessage) { _ in
+            Button("OK", role: .cancel) {}
+        } message: { message in
+            Text(message)
+        }
     }
 
     private func choosePhoto() {
@@ -30,8 +40,11 @@ struct ImagePickerButton: View {
         panel.allowedContentTypes = [.image]
         panel.allowsMultipleSelection = false
         panel.canChooseDirectories = false
-        if panel.runModal() == .OK, let url = panel.url, let data = try? Data(contentsOf: url) {
-            photo = data
+        guard panel.runModal() == .OK, let url = panel.url else { return }
+        do {
+            photo = try Data(contentsOf: url)
+        } catch {
+            loadErrorMessage = error.localizedDescription
         }
     }
 }

@@ -4,6 +4,7 @@ import SwiftData
 struct SwatchEditSheet: View {
     let presetInk: Ink?
     let presetPaper: Paper?
+    var swatch: Swatch? = nil
 
     @Environment(\.modelContext) private var context
     @Environment(\.dismiss) private var dismiss
@@ -58,7 +59,7 @@ struct SwatchEditSheet: View {
                 }
             }
             .formStyle(.grouped)
-            .navigationTitle("Swatch Test")
+            .navigationTitle(swatch == nil ? "Swatch Test" : "Edit Swatch")
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
                     Button("Cancel") { dismiss() }
@@ -69,14 +70,34 @@ struct SwatchEditSheet: View {
                 }
             }
         }
+        .onAppear(perform: loadIfEditing)
         .frame(minWidth: 420, minHeight: 460)
+    }
+
+    private func loadIfEditing() {
+        guard let swatch else { return }
+        selectedInk = swatch.ink
+        selectedPaper = swatch.paper
+        dateTested = swatch.dateTested
+        rating = swatch.rating
+        notes = swatch.notes ?? ""
+        photo = swatch.photo
     }
 
     private func save() {
         guard let ink = presetInk ?? selectedInk, let paper = presetPaper ?? selectedPaper else { return }
-        let swatch = Swatch(ink: ink, paper: paper, dateTested: dateTested,
-                             rating: rating, notes: notes.isEmpty ? nil : notes, photo: photo)
-        context.insert(swatch)
+        if let swatch {
+            swatch.ink = ink
+            swatch.paper = paper
+            swatch.dateTested = dateTested
+            swatch.rating = rating
+            swatch.notes = notes.isEmpty ? nil : notes
+            swatch.photo = photo
+        } else {
+            let newSwatch = Swatch(ink: ink, paper: paper, dateTested: dateTested,
+                                    rating: rating, notes: notes.isEmpty ? nil : notes, photo: photo)
+            context.insert(newSwatch)
+        }
         dismiss()
     }
 }

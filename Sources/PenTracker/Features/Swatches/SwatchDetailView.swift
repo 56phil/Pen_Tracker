@@ -5,6 +5,8 @@ struct SwatchDetailView: View {
     @Bindable var swatch: Swatch
     @Environment(\.modelContext) private var context
 
+    @State private var showingEdit = false
+
     var body: some View {
         Form {
             Section("Details") {
@@ -50,5 +52,13 @@ struct SwatchDetailView: View {
         }
         .formStyle(.grouped)
         .navigationTitle("Swatch")
+        .toolbar {
+            ToolbarItem(placement: .primaryAction) {
+                Button("Edit") { showingEdit = true }
+            }
+        }
+        .sheet(isPresented: $showingEdit) {
+            SwatchEditSheet(presetInk: nil, presetPaper: nil, swatch: swatch)
+        }
     }
 }

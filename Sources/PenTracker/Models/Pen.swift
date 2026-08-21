@@ -18,7 +18,7 @@ final class Pen {
     @Attribute(.externalStorage) var photo: Data?
     var createdAt: Date
 
-    @Relationship(deleteRule: .cascade, inverse: \Inking.pen)
+    @Relationship(deleteRule: .nullify, inverse: \Inking.pen)
     var inkings: [Inking] = []
 
     var currentInking: Inking? {

@@ -20,7 +20,7 @@ final class Ink {
     @Attribute(.externalStorage) var photo: Data?
     var createdAt: Date
 
-    @Relationship(deleteRule: .cascade, inverse: \Inking.ink)
+    @Relationship(deleteRule: .nullify, inverse: \Inking.ink)
     var inkings: [Inking] = []
 
     @Relationship(deleteRule: .cascade, inverse: \Swatch.ink)

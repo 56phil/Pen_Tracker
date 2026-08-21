@@ -1,0 +1,41 @@
+name: PenTracker
+options:
+  bundleIdPrefix: com.local
+  deploymentTarget:
+    macOS: "14.0"
+  createIntermediateGroups: true
+
+settings:
+  base:
+    SWIFT_VERSION: "5.0"
+    MACOSX_DEPLOYMENT_TARGET: "14.0"
+    CODE_SIGN_IDENTITY: "-"
+    CODE_SIGN_STYLE: Manual
+    CODE_SIGNING_REQUIRED: NO
+    CODE_SIGNING_ALLOWED: YES
+    ENABLE_HARDENED_RUNTIME: NO
+    GENERATE_INFOPLIST_FILE: YES
+    INFOPLIST_KEY_CFBundleDisplayName: PenTracker
+    INFOPLIST_KEY_NSHumanReadableCopyright: "Personal use, local only"
+    MARKETING_VERSION: "1.0"
+    CURRENT_PROJECT_VERSION: "1"
+
+targets:
+  PenTracker:
+    type: application
+    platform: macOS
+    deploymentTarget: "14.0"
+    sources:
+      - path: Sources/PenTracker
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.local.pentracker
+        PRODUCT_NAME: PenTracker
+
+schemes:
+  PenTracker:
+    build:
+      targets:
+        PenTracker: all
+    run:
+      config: Debug

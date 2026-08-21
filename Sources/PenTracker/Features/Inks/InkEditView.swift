@@ -1,0 +1,146 @@
+import SwiftUI
+import SwiftData
+
+struct InkEditView: View {
+    @Environment(\.modelContext) private var context
+    @Environment(\.dismiss) private var dismiss
+
+    let ink: Ink?
+
+    @State private var brand = ""
+    @State private var lineName = ""
+    @State private var colorName = ""
+    @State private var colorHex = ""
+    @State private var packageType: InkPackageType = .bottle
+    @State private var volumeText = ""
+    @State private var quantity = 1
+    @State private var status: CollectionStatus = .inRotation
+    @State private var purchaseDate: Date = .now
+    @State private var hasPurchaseDate = false
+    @State private var priceText = ""
+    @State private var vendor = ""
+    @State private var purchaseURLText = ""
+    @State private var notes = ""
+    @State private var photo: Data?
+
+    private var isNew: Bool { ink == nil }
+
+    var body: some View {
+        NavigationStack {
+            Form {
+                Section("Details") {
+                    TextField("Brand", text: $brand)
+                    TextField("Line (e.g. Iroshizuku)", text: $lineName)
+                    TextField("Color Name", text: $colorName)
+                    HStack {
+                        TextField("Hex (e.g. 1B4B8A)", text: $colorHex)
+                        ColorSwatchView(hex: colorHex, size: 20)
+                    }
+                    Picker("Package", selection: $packageType) {
+                        ForEach(InkPackageType.allCases) { p in
+                            Text(p.label).tag(p)
+                        }
+                    }
+                    TextField("Volume (mL)", text: $volumeText)
+                    Stepper("Quantity Owned: \(quantity)", value: $quantity, in: 0...99)
+                    Picker("Status", selection: $status) {
+                        ForEach(CollectionStatus.allCases) { s in
+                            Text(s.label).tag(s)
+                        }
+                    }
+                }
+
+                Section("Purchase") {
+                    Toggle("Track Purchase Info", isOn: $hasPurchaseDate)
+                    if hasPurchaseDate {
+                        DatePicker("Date", selection: $purchaseDate, displayedComponents: .date)
+                        TextField("Price", text: $priceText)
+                        TextField("Vendor", text: $vendor)
+                        TextField("Purchase URL", text: $purchaseURLText)
+                    }
+                }
+
+                Section("Notes") {
+                    TextEditor(text: $notes).frame(minHeight: 80)
+                }
+
+                Section("Photo") {
+                    ImagePickerButton(photo: $photo)
+                }
+            }
+            .formStyle(.grouped)
+            .navigationTitle(isNew ? "Add Ink" : "Edit Ink")
+            .toolbar {
+                ToolbarItem(placement: .cancellationAction) {
+                    Button("Cancel") { dismiss() }
+                }
+                ToolbarItem(placement: .confirmationAction) {
+                    Button("Save") { save() }
+                        .disabled(brand.isEmpty || colorName.isEmpty)
+                }
+            }
+        }
+        .onAppear(perform: loadIfEditing)
+        .frame(minWidth: 420, minHeight: 560)
+    }
+
+    private func loadIfEditing() {
+        guard let ink else { return }
+        brand = ink.brand
+        lineName = ink.lineName
+        colorName = ink.colorName
+        colorHex = ink.colorHex ?? ""
+        packageType = ink.packageType
+        if let volume = ink.volumeML {
+            volumeText = String(format: "%.0f", volume)
+        }
+        quantity = ink.quantity
+        status = ink.status
+        if let date = ink.purchaseDate {
+            hasPurchaseDate = true
+            purchaseDate = date
+        }
+        if let price = ink.price {
+            priceText = NSDecimalNumber(decimal: price).stringValue
+        }
+        vendor = ink.vendor ?? ""
+        purchaseURLText = ink.purchaseURL?.absoluteString ?? ""
+        notes = ink.notes
+        photo = ink.photo
+    }
+
+    private func save() {
+        let price = Decimal(string: priceText)
+        let url = purchaseURLText.isEmpty ? nil : URL(string: purchaseURLText)
+        let volume = Double(volumeText)
+        let hex = colorHex.isEmpty ? nil : colorHex
+
+        if let ink {
+            ink.brand = brand
+            ink.lineName = lineName
+            ink.colorName = colorName
+            ink.colorHex = hex
+            ink.packageType = packageType
+            ink.volumeML = volume
+            ink.quantity = quantity
+            ink.status = status
+            ink.purchaseDate = hasPurchaseDate ? purchaseDate : nil
+            ink.price = hasPurchaseDate ? price : nil
+            ink.vendor = hasPurchaseDate ? vendor : nil
+            ink.purchaseURL = hasPurchaseDate ? url : nil
+            ink.notes = notes
+            ink.photo = photo
+        } else {
+            let newInk = Ink(brand: brand, lineName: lineName, colorName: colorName,
+                              colorHex: hex, packageType: packageType, volumeML: volume,
+                              quantity: quantity, status: status,
+                              purchaseDate: hasPurchaseDate ? purchaseDate : nil,
+                              price: hasPurchaseDate ? price : nil,
+                              vendor: hasPurchaseDate ? vendor : nil,
+                              purchaseURL: hasPurchaseDate ? url : nil,
+                              notes: notes, photo: photo)
+            context.insert(newInk)
+        }
+        dismiss()
+    }
+}

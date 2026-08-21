@@ -101,7 +101,7 @@ struct InkEditView: View {
             purchaseDate = date
         }
         if let price = ink.price {
-            priceText = NSDecimalNumber(decimal: price).stringValue
+            priceText = price.priceText
         }
         vendor = ink.vendor ?? ""
         purchaseURLText = ink.purchaseURL?.absoluteString ?? ""
@@ -110,7 +110,7 @@ struct InkEditView: View {
     }
 
     private func save() {
-        let price = Decimal(string: priceText)
+        let price = Decimal(priceText: priceText)
         let url = purchaseURLText.isEmpty ? nil : URL(string: purchaseURLText)
         let volume = Double(volumeText)
         let hex = colorHex.isEmpty ? nil : colorHex

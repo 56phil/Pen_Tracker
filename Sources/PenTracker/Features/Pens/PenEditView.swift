@@ -86,7 +86,7 @@ struct PenEditView: View {
             purchaseDate = date
         }
         if let price = pen.price {
-            priceText = NSDecimalNumber(decimal: price).stringValue
+            priceText = price.priceText
         }
         vendor = pen.vendor ?? ""
         purchaseURLText = pen.purchaseURL?.absoluteString ?? ""
@@ -95,7 +95,7 @@ struct PenEditView: View {
     }
 
     private func save() {
-        let price = Decimal(string: priceText)
+        let price = Decimal(priceText: priceText)
         let url = purchaseURLText.isEmpty ? nil : URL(string: purchaseURLText)
 
         if let pen {

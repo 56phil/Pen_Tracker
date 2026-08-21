@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0147A3EE4535003BDD432E3F /* Decimal+PriceText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 285E2CAD84B810EC1F538D90 /* Decimal+PriceText.swift */; };
 		0A0417119ECEBED0A8FD516F /* Ink.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A77DCEC498D492F4EC1E535 /* Ink.swift */; };
 		0EC967E35C64D2E411CF9FE8 /* Color+Hex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59AB0ADC04AD2BAC05E396D3 /* Color+Hex.swift */; };
 		2E24A2C87CD3C5ADE49E4380 /* PenTrackerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BBC9901E7E4720FDFCDEDED /* PenTrackerApp.swift */; };
@@ -47,6 +48,7 @@
 		1C6199FE0AF9B740D8E556F3 /* RatingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RatingView.swift; sourceTree = "<group>"; };
 		20EE363B19ADC66BB0F9678C /* InkEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InkEditView.swift; sourceTree = "<group>"; };
 		253DE75CA147BFCD50599BA3 /* PenRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PenRowView.swift; sourceTree = "<group>"; };
+		285E2CAD84B810EC1F538D90 /* Decimal+PriceText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Decimal+PriceText.swift"; sourceTree = "<group>"; };
 		2F9815B0C647F6582E69F805 /* InkThisPenSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InkThisPenSheet.swift; sourceTree = "<group>"; };
 		3C7DA06BB2C1B3F206092143 /* PaperEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaperEditView.swift; sourceTree = "<group>"; };
 		41A2693D1316CFD3C5267CF6 /* InkDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InkDetailView.swift; sourceTree = "<group>"; };
@@ -165,6 +167,7 @@
 			children = (
 				59AB0ADC04AD2BAC05E396D3 /* Color+Hex.swift */,
 				C6A57626DB3AF848021B03E2 /* ColorSwatchView.swift */,
+				285E2CAD84B810EC1F538D90 /* Decimal+PriceText.swift */,
 				9D93D5A98AFAFF6999D3BD90 /* ImagePickerButton.swift */,
 				1C6199FE0AF9B740D8E556F3 /* RatingView.swift */,
 				7A8EB5B2C9E33330BAEAF27F /* StatusBadge.swift */,
@@ -292,6 +295,7 @@
 				6451363F258C9676E7B16A42 /* ColorSwatchView.swift in Sources */,
 				32F2F13ADE59CF497DD660D2 /* ContentView.swift in Sources */,
 				8D2B1E6A9CDF57C88B55B923 /* CurrentlyInkedView.swift in Sources */,
+				0147A3EE4535003BDD432E3F /* Decimal+PriceText.swift in Sources */,
 				76C706E099B0DBBABF027857 /* ImagePickerButton.swift in Sources */,
 				0A0417119ECEBED0A8FD516F /* Ink.swift in Sources */,
 				D161E81F722382A9C91A3D30 /* InkDetailView.swift in Sources */,

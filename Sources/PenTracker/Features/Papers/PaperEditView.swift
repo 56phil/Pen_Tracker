@@ -91,7 +91,7 @@ struct PaperEditView: View {
             purchaseDate = date
         }
         if let price = paper.price {
-            priceText = NSDecimalNumber(decimal: price).stringValue
+            priceText = price.priceText
         }
         vendor = paper.vendor ?? ""
         purchaseURLText = paper.purchaseURL?.absoluteString ?? ""
@@ -100,7 +100,7 @@ struct PaperEditView: View {
     }
 
     private func save() {
-        let price = Decimal(string: priceText)
+        let price = Decimal(priceText: priceText)
         let url = purchaseURLText.isEmpty ? nil : URL(string: purchaseURLText)
         let weight = Int(weightText)
         let finish = colorOrFinish.isEmpty ? nil : colorOrFinish

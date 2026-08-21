@@ -24,6 +24,7 @@
 		5D284A1B71A138B832E4A930 /* PaperListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E066DBBD3FEE16F3FA662B16 /* PaperListView.swift */; };
 		6451363F258C9676E7B16A42 /* ColorSwatchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6A57626DB3AF848021B03E2 /* ColorSwatchView.swift */; };
 		6ECC241524ADFDF325415333 /* InkEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20EE363B19ADC66BB0F9678C /* InkEditView.swift */; };
+		6F5C0464BBC56AD917EF6FDC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8E80882F71B5CED8B8094D60 /* Assets.xcassets */; };
 		73BA82BBE462D3441DE69774 /* Pen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 576BDB50525EE57D9D35FECA /* Pen.swift */; };
 		76C706E099B0DBBABF027857 /* ImagePickerButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D93D5A98AFAFF6999D3BD90 /* ImagePickerButton.swift */; };
 		8018924704AC81EADC561C0A /* InkListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5345DBBD67131D465533E463 /* InkListView.swift */; };
@@ -77,6 +78,7 @@
 		7A8EB5B2C9E33330BAEAF27F /* StatusBadge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusBadge.swift; sourceTree = "<group>"; };
 		85EE12422A83F90D651310FE /* CurrentlyInkedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentlyInkedView.swift; sourceTree = "<group>"; };
 		8E54A15A7F484CFB12EA8164 /* SwatchDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwatchDetailView.swift; sourceTree = "<group>"; };
+		8E80882F71B5CED8B8094D60 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		9748C846569014AE080321B6 /* PenDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PenDetailView.swift; sourceTree = "<group>"; };
 		9D93D5A98AFAFF6999D3BD90 /* ImagePickerButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePickerButton.swift; sourceTree = "<group>"; };
 		9EFF61AC206020822BB9F0FF /* Date+Abbreviated.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Abbreviated.swift"; sourceTree = "<group>"; };
@@ -247,6 +249,7 @@
 		F9AC005E17621CF6789A12C5 /* PenTracker */ = {
 			isa = PBXGroup;
 			children = (
+				8E80882F71B5CED8B8094D60 /* Assets.xcassets */,
 				E1F98AB5C3F46F55F599469D /* App */,
 				22E0D2C9EDD2AF53F842E17F /* Features */,
 				313271D2C97EB90099D321F6 /* Models */,
@@ -264,6 +267,7 @@
 			buildConfigurationList = C2A569C3A673AB6023213537 /* Build configuration list for PBXNativeTarget "PenTracker" */;
 			buildPhases = (
 				46B10CF2DC5CFD28AF416A5C /* Sources */,
+				81CFFD7BC554BAE3E82C927B /* Resources */,
 			);
 			buildRules = (
 			);
@@ -308,6 +312,17 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		81CFFD7BC554BAE3E82C927B /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6F5C0464BBC56AD917EF6FDC /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		46B10CF2DC5CFD28AF416A5C /* Sources */ = {

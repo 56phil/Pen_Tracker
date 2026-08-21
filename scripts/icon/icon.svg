@@ -1,0 +1,71 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#4b3a8c"/>
+      <stop offset="55%" stop-color="#332764"/>
+      <stop offset="100%" stop-color="#211a45"/>
+    </linearGradient>
+    <radialGradient id="bgGlow" cx="32%" cy="24%" r="75%">
+      <stop offset="0%" stop-color="#6c56b8" stop-opacity="0.55"/>
+      <stop offset="45%" stop-color="#6c56b8" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="nib" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#f6e2b1"/>
+      <stop offset="45%" stop-color="#e3bb6b"/>
+      <stop offset="100%" stop-color="#b6863c"/>
+    </linearGradient>
+    <linearGradient id="nibSheen" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.55"/>
+      <stop offset="35%" stop-color="#ffffff" stop-opacity="0"/>
+    </linearGradient>
+    <radialGradient id="ink" cx="35%" cy="30%" r="70%">
+      <stop offset="0%" stop-color="#5fe0d0"/>
+      <stop offset="100%" stop-color="#1f9c92"/>
+    </radialGradient>
+    <filter id="softShadow" x="-40%" y="-40%" width="180%" height="180%">
+      <feDropShadow dx="0" dy="14" stdDeviation="18" flood-color="#0d0824" flood-opacity="0.45"/>
+    </filter>
+  </defs>
+
+  <!-- background -->
+  <rect x="0" y="0" width="1024" height="1024" rx="228" fill="url(#bg)"/>
+  <rect x="0" y="0" width="1024" height="1024" rx="228" fill="url(#bgGlow)"/>
+
+  <!-- nib -->
+  <g filter="url(#softShadow)">
+    <path d="M 512 190
+             C 592 190 654 204 692 240
+             C 730 276 742 322 726 372
+             C 712 416 682 452 646 486
+             C 600 528 566 562 536 652
+             C 522 694 514 748 512 878
+             C 510 748 502 694 488 652
+             C 458 562 424 528 378 486
+             C 342 452 312 416 298 372
+             C 282 322 294 276 332 240
+             C 370 204 432 190 512 190 Z"
+          fill="url(#nib)"/>
+    <path d="M 512 190
+             C 592 190 654 204 692 240
+             C 730 276 742 322 726 372
+             C 712 416 682 452 646 486
+             C 600 528 566 562 536 652
+             C 522 694 514 748 512 878
+             C 510 748 502 694 488 652
+             C 458 562 424 528 378 486
+             C 342 452 312 416 298 372
+             C 282 322 294 276 332 240
+             C 370 204 432 190 512 190 Z"
+          fill="url(#nibSheen)"/>
+
+    <!-- shoulder crease lines -->
+    <path d="M 402 250 C 440 296 466 336 486 372" stroke="#8a6428" stroke-width="5" opacity="0.35" fill="none" stroke-linecap="round"/>
+    <path d="M 622 250 C 584 296 558 336 538 372" stroke="#8a6428" stroke-width="5" opacity="0.35" fill="none" stroke-linecap="round"/>
+
+    <!-- breather hole -->
+    <circle cx="512" cy="366" r="38" fill="url(#ink)"/>
+
+    <!-- center slit -->
+    <path d="M 512 404 L 519 640 L 512 800 L 505 640 Z" fill="#8a6428" opacity="0.8"/>
+  </g>
+</svg>

@@ -41,7 +41,7 @@ struct InkThisPenSheet: View {
                     LabeledContent("Ink", value: "\(ink.brand) \(ink.colorName)")
                 }
 
-                DatePicker("Filled Date", selection: $filledDate, displayedComponents: .date)
+                DatePicker("Filled Date", selection: $filledDate, in: ...Date.now, displayedComponents: .date)
 
                 Section("Notes") {
                     TextEditor(text: $notes).frame(minHeight: 60)

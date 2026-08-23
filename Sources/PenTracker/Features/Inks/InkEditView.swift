@@ -15,6 +15,7 @@ struct InkEditView: View {
     @State private var volumeText = ""
     @State private var quantity = 1
     @State private var status: CollectionStatus = .inRotation
+    @State private var rating: ItemRating?
     @State private var purchaseInfo = PurchaseInfoFormState()
     @State private var notes = ""
     @State private var photo: Data?
@@ -44,6 +45,10 @@ struct InkEditView: View {
                             Text(s.label).tag(s)
                         }
                     }
+                }
+
+                Section("Rating") {
+                    ItemRatingPicker(rating: $rating)
                 }
 
                 PurchaseInfoEditSection(state: $purchaseInfo)
@@ -84,6 +89,7 @@ struct InkEditView: View {
         }
         quantity = ink.quantity
         status = ink.status
+        rating = ink.rating
         purchaseInfo.load(from: ink)
         notes = ink.notes
         photo = ink.photo
@@ -102,18 +108,19 @@ struct InkEditView: View {
             ink.volumeML = volume
             ink.quantity = quantity
             ink.status = status
+            ink.rating = rating
             purchaseInfo.apply(to: ink)
             ink.notes = notes
             ink.photo = photo
         } else {
             let newInk = Ink(brand: brand, lineName: lineName, colorName: colorName,
-                              colorHex: hex, packageType: packageType, volumeML: volume,
-                              quantity: quantity, status: status,
-                              purchaseDate: purchaseInfo.resolvedDate,
-                              price: purchaseInfo.resolvedPrice,
-                              vendor: purchaseInfo.resolvedVendor,
-                              purchaseURL: purchaseInfo.resolvedURL,
-                              notes: notes, photo: photo)
+                             colorHex: hex, packageType: packageType, volumeML: volume,
+                             quantity: quantity, status: status, rating: rating,
+                             purchaseDate: purchaseInfo.resolvedDate,
+                             price: purchaseInfo.resolvedPrice,
+                             vendor: purchaseInfo.resolvedVendor,
+                             purchaseURL: purchaseInfo.resolvedURL,
+                             notes: notes, photo: photo)
             context.insert(newInk)
         }
         dismiss()

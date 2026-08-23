@@ -22,6 +22,7 @@ struct PenDetailView: View {
                 LabeledContent("Nib / Tip", value: pen.nibSizeOrTip)
                 LabeledContent("Filling Mechanism", value: pen.fillingMechanism)
                 LabeledContent("Status") { StatusBadge(status: pen.status) }
+                LabeledContent("Rating") { RatingBadgeView(rating: pen.rating) }
             }
 
             Section("Currently Inked") {
@@ -62,7 +63,7 @@ struct PenDetailView: View {
                                             .font(.caption)
                                             .foregroundStyle(.secondary)
                                     }
-                                    RatingDisplayView(rating: inking.rating)
+                                    RatingBadgeView(rating: inking.rating)
                                         .padding(.top, 2)
                                 }
                                 Spacer()

@@ -36,6 +36,7 @@ struct InkDetailView: View {
                 }
                 LabeledContent("Quantity Owned", value: "\(ink.quantity)")
                 LabeledContent("Status") { StatusBadge(status: ink.status) }
+                LabeledContent("Rating") { RatingBadgeView(rating: ink.rating) }
             }
 
             Section("Used In") {
@@ -53,7 +54,7 @@ struct InkDetailView: View {
                                             .font(.caption)
                                             .foregroundStyle(.secondary)
                                     }
-                                    RatingDisplayView(rating: inking.rating)
+                                    RatingBadgeView(rating: inking.rating)
                                         .padding(.top, 2)
                                 }
                                 Spacer()
@@ -79,7 +80,7 @@ struct InkDetailView: View {
                         HStack {
                             Text("\(paper.brand) \(paper.lineName)")
                             Spacer()
-                            RatingDisplayView(rating: swatch.rating)
+                            RatingBadgeView(rating: swatch.rating)
                         }
                     }
                 }

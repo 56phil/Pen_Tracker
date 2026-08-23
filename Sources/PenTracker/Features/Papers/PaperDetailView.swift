@@ -1,5 +1,5 @@
-import SwiftUI
 import SwiftData
+import SwiftUI
 
 struct PaperDetailView: View {
     @Bindable var paper: Paper
@@ -26,6 +26,7 @@ struct PaperDetailView: View {
                 }
                 LabeledContent("Quantity", value: "\(paper.quantity)")
                 LabeledContent("Status") { StatusBadge(status: paper.status) }
+                LabeledContent("Rating") { RatingBadgeView(rating: paper.rating) }
             }
 
             Section("Swatch Tests") {
@@ -36,14 +37,16 @@ struct PaperDetailView: View {
                             ColorSwatchView(hex: ink.colorHex)
                             Text("\(ink.brand) \(ink.colorName)")
                             Spacer()
-                            RatingDisplayView(rating: swatch.rating)
+                            RatingBadgeView(rating: swatch.rating)
                         }
                     }
                 }
             }
 
             if let vendor = paper.vendor, !vendor.isEmpty {
-                PurchaseInfoView(vendor: vendor, price: paper.price, date: paper.purchaseDate, url: paper.purchaseURL)
+                PurchaseInfoView(
+                    vendor: vendor, price: paper.price, date: paper.purchaseDate,
+                    url: paper.purchaseURL)
             }
 
             if !paper.notes.isEmpty {

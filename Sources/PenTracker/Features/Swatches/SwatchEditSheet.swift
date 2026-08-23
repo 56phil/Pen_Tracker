@@ -1,5 +1,5 @@
-import SwiftUI
 import SwiftData
+import SwiftUI
 
 struct SwatchEditSheet: View {
     let presetInk: Ink?
@@ -15,7 +15,7 @@ struct SwatchEditSheet: View {
     @State private var selectedInk: Ink?
     @State private var selectedPaper: Paper?
     @State private var dateTested: Date = .now
-    @State private var rating: Int?
+    @State private var rating: ItemRating?
     @State private var notes = ""
     @State private var photo: Data?
 
@@ -47,7 +47,7 @@ struct SwatchEditSheet: View {
                 DatePicker("Date Tested", selection: $dateTested, displayedComponents: .date)
 
                 Section("Rating") {
-                    RatingView(rating: $rating)
+                    ItemRatingPicker(rating: $rating)
                 }
 
                 Section("Notes") {
@@ -66,7 +66,9 @@ struct SwatchEditSheet: View {
                 }
                 ToolbarItem(placement: .confirmationAction) {
                     Button("Save") { save() }
-                        .disabled((presetInk ?? selectedInk) == nil || (presetPaper ?? selectedPaper) == nil)
+                        .disabled(
+                            (presetInk ?? selectedInk) == nil
+                                || (presetPaper ?? selectedPaper) == nil)
                 }
             }
         }
@@ -85,7 +87,9 @@ struct SwatchEditSheet: View {
     }
 
     private func save() {
-        guard let ink = presetInk ?? selectedInk, let paper = presetPaper ?? selectedPaper else { return }
+        guard let ink = presetInk ?? selectedInk, let paper = presetPaper ?? selectedPaper else {
+            return
+        }
         if let swatch {
             swatch.ink = ink
             swatch.paper = paper
@@ -94,8 +98,9 @@ struct SwatchEditSheet: View {
             swatch.notes = notes.isEmpty ? nil : notes
             swatch.photo = photo
         } else {
-            let newSwatch = Swatch(ink: ink, paper: paper, dateTested: dateTested,
-                                    rating: rating, notes: notes.isEmpty ? nil : notes, photo: photo)
+            let newSwatch = Swatch(
+                ink: ink, paper: paper, dateTested: dateTested,
+                rating: rating, notes: notes.isEmpty ? nil : notes, photo: photo)
             context.insert(newSwatch)
         }
         dismiss()

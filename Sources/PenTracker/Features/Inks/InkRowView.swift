@@ -13,6 +13,7 @@ struct InkRowView: View {
                     .foregroundStyle(.secondary)
             }
             Spacer()
+            RatingBadgeView(rating: ink.rating)
             StatusBadge(status: ink.status)
         }
         .padding(.vertical, 2)

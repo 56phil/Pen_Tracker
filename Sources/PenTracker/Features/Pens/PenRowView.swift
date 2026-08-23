@@ -20,6 +20,7 @@ struct PenRowView: View {
                 .foregroundStyle(.secondary)
             }
             Spacer()
+            RatingBadgeView(rating: pen.rating)
             StatusBadge(status: pen.status)
         }
         .padding(.vertical, 2)

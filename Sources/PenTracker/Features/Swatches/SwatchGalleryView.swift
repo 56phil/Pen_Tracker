@@ -1,5 +1,5 @@
-import SwiftUI
 import SwiftData
+import SwiftUI
 
 struct SwatchGalleryView: View {
     @Query(sort: \Swatch.dateTested, order: .reverse) private var swatches: [Swatch]
@@ -12,9 +12,11 @@ struct SwatchGalleryView: View {
     var body: some View {
         ScrollView {
             if swatches.isEmpty {
-                ContentUnavailableView("No Swatches Yet", systemImage: "paintpalette",
-                                        description: Text("Test an ink on a paper to build your swatch gallery."))
-                    .padding(.top, 60)
+                ContentUnavailableView(
+                    "No Swatches Yet", systemImage: "paintpalette",
+                    description: Text("Test an ink on a paper to build your swatch gallery.")
+                )
+                .padding(.top, 60)
             } else {
                 LazyVGrid(columns: columns, spacing: 16) {
                     ForEach(swatches) { swatch in
@@ -32,7 +34,7 @@ struct SwatchGalleryView: View {
                                         .font(.caption)
                                         .foregroundStyle(.secondary)
                                 }
-                                RatingDisplayView(rating: swatch.rating)
+                                RatingBadgeView(rating: swatch.rating)
                                 Text(swatch.dateTested.abbreviated)
                                     .font(.caption2)
                                     .foregroundStyle(.secondary)

@@ -13,6 +13,7 @@ struct PenEditView: View {
     @State private var nibSizeOrTip = ""
     @State private var fillingMechanism = ""
     @State private var status: CollectionStatus = .inRotation
+    @State private var rating: ItemRating?
     @State private var purchaseInfo = PurchaseInfoFormState()
     @State private var notes = ""
     @State private var photo: Data?
@@ -33,6 +34,10 @@ struct PenEditView: View {
                             Text(s.label).tag(s)
                         }
                     }
+                }
+
+                Section("Rating") {
+                    ItemRatingPicker(rating: $rating)
                 }
 
                 PurchaseInfoEditSection(state: $purchaseInfo)
@@ -69,6 +74,7 @@ struct PenEditView: View {
         nibSizeOrTip = pen.nibSizeOrTip
         fillingMechanism = pen.fillingMechanism
         status = pen.status
+        rating = pen.rating
         purchaseInfo.load(from: pen)
         notes = pen.notes
         photo = pen.photo
@@ -82,13 +88,14 @@ struct PenEditView: View {
             pen.nibSizeOrTip = nibSizeOrTip
             pen.fillingMechanism = fillingMechanism
             pen.status = status
+            pen.rating = rating
             purchaseInfo.apply(to: pen)
             pen.notes = notes
             pen.photo = photo
         } else {
             let newPen = Pen(brand: brand, model: model, color: color,
                               nibSizeOrTip: nibSizeOrTip, fillingMechanism: fillingMechanism,
-                              status: status,
+                              status: status, rating: rating,
                               purchaseDate: purchaseInfo.resolvedDate,
                               price: purchaseInfo.resolvedPrice,
                               vendor: purchaseInfo.resolvedVendor,

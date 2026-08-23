@@ -17,6 +17,7 @@ struct PaperRowView: View {
                 .foregroundStyle(.secondary)
             }
             Spacer()
+            RatingBadgeView(rating: paper.rating)
             StatusBadge(status: paper.status)
         }
         .padding(.vertical, 2)

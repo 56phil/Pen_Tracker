@@ -14,6 +14,7 @@ struct PaperEditView: View {
     @State private var format = ""
     @State private var quantity = 1
     @State private var status: CollectionStatus = .inRotation
+    @State private var rating: ItemRating?
     @State private var purchaseInfo = PurchaseInfoFormState()
     @State private var notes = ""
     @State private var photo: Data?
@@ -35,6 +36,10 @@ struct PaperEditView: View {
                             Text(s.label).tag(s)
                         }
                     }
+                }
+
+                Section("Rating") {
+                    ItemRatingPicker(rating: $rating)
                 }
 
                 PurchaseInfoEditSection(state: $purchaseInfo)
@@ -74,6 +79,7 @@ struct PaperEditView: View {
         format = paper.format
         quantity = paper.quantity
         status = paper.status
+        rating = paper.rating
         purchaseInfo.load(from: paper)
         notes = paper.notes
         photo = paper.photo
@@ -91,18 +97,19 @@ struct PaperEditView: View {
             paper.format = format
             paper.quantity = quantity
             paper.status = status
+            paper.rating = rating
             purchaseInfo.apply(to: paper)
             paper.notes = notes
             paper.photo = photo
         } else {
             let newPaper = Paper(brand: brand, lineName: lineName, weightGSM: weight,
-                                  colorOrFinish: finish, format: format, quantity: quantity,
-                                  status: status,
-                                  purchaseDate: purchaseInfo.resolvedDate,
-                                  price: purchaseInfo.resolvedPrice,
-                                  vendor: purchaseInfo.resolvedVendor,
-                                  purchaseURL: purchaseInfo.resolvedURL,
-                                  notes: notes, photo: photo)
+                                 colorOrFinish: finish, format: format, quantity: quantity,
+                                 status: status, rating: rating,
+                                 purchaseDate: purchaseInfo.resolvedDate,
+                                 price: purchaseInfo.resolvedPrice,
+                                 vendor: purchaseInfo.resolvedVendor,
+                                 purchaseURL: purchaseInfo.resolvedURL,
+                                 notes: notes, photo: photo)
             context.insert(newPaper)
         }
         dismiss()

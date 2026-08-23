@@ -1,5 +1,5 @@
-import SwiftUI
 import SwiftData
+import SwiftUI
 
 struct SwatchDetailView: View {
     @Bindable var swatch: Swatch
@@ -22,11 +22,7 @@ struct SwatchDetailView: View {
                     LabeledContent("Paper", value: "\(paper.brand) \(paper.lineName)")
                 }
                 LabeledContent("Date Tested", value: swatch.dateTested.abbreviated)
-                HStack {
-                    Text("Rating")
-                    Spacer()
-                    RatingDisplayView(rating: swatch.rating)
-                }
+                LabeledContent("Rating") { RatingBadgeView(rating: swatch.rating) }
             }
 
             if let notes = swatch.notes, !notes.isEmpty {

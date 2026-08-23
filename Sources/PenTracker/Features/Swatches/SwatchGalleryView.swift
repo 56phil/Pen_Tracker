@@ -42,6 +42,11 @@ struct SwatchGalleryView: View {
                             .clipShape(RoundedRectangle(cornerRadius: 10))
                         }
                         .buttonStyle(.plain)
+                        .contextMenu {
+                            Button("Delete", role: .destructive) {
+                                context.delete(swatch)
+                            }
+                        }
                     }
                 }
                 .padding()

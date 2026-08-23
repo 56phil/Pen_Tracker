@@ -3,7 +3,8 @@ import SwiftData
 
 struct CollectionListView<Model: CollectibleItem, RowContent: View, AddContent: View, DetailContent: View>: View {
     @Environment(\.modelContext) private var context
-    @Query private var items: [Model]
+    @Binding var items: [Model]
+    let refresh: () -> Void
 
     let navigationTitle: String
     let searchPrompt: String
@@ -20,8 +21,11 @@ struct CollectionListView<Model: CollectibleItem, RowContent: View, AddContent: 
     @State private var searchText = ""
     @State private var statusFilter: CollectionStatus?
     @State private var showingAdd = false
+    @State private var selection: Set<Model.ID> = []
 
-    init(navigationTitle: String,
+    init(items: Binding<[Model]>,
+         refresh: @escaping () -> Void,
+         navigationTitle: String,
          searchPrompt: String,
          addLabel: String,
          emptyTitle: String,
@@ -31,7 +35,8 @@ struct CollectionListView<Model: CollectibleItem, RowContent: View, AddContent: 
          @ViewBuilder row: @escaping (Model) -> RowContent,
          @ViewBuilder addSheet: @escaping () -> AddContent,
          @ViewBuilder detail: @escaping (Model) -> DetailContent) {
-        _items = Query(sort: [SortDescriptor(\Model.brand)])
+        _items = items
+        self.refresh = refresh
         self.navigationTitle = navigationTitle
         self.searchPrompt = searchPrompt
         self.addLabel = addLabel
@@ -51,15 +56,27 @@ struct CollectionListView<Model: CollectibleItem, RowContent: View, AddContent: 
         }
     }
 
+    private func delete(_ item: Model) {
+        context.delete(item)
+        selection.remove(item.id)
+        refresh()
+    }
+
     var body: some View {
-        List {
+        List(selection: $selection) {
             ForEach(filteredItems) { item in
                 NavigationLink(value: item) {
                     row(item)
                 }
+                .contextMenu {
+                    Button("Delete", role: .destructive) {
+                        delete(item)
+                    }
+                }
             }
             .onDelete { indexSet in
                 for index in indexSet { context.delete(filteredItems[index]) }
+                refresh()
             }
         }
         .navigationDestination(for: Model.self) { item in
@@ -84,7 +101,7 @@ struct CollectionListView<Model: CollectibleItem, RowContent: View, AddContent: 
                 }
             }
         }
-        .sheet(isPresented: $showingAdd) {
+        .sheet(isPresented: $showingAdd, onDismiss: refresh) {
             addSheet()
         }
         .overlay {

@@ -39,6 +39,7 @@
 		BB5E86EDEB9B6C7B63EBF36F /* SidebarSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5118B4A9947BB43F219461B /* SidebarSection.swift */; };
 		BBE1287307FDFCDEB4B5C589 /* PenRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 253DE75CA147BFCD50599BA3 /* PenRowView.swift */; };
 		C2C6D573A08098CAA2EF7094 /* SwatchDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E54A15A7F484CFB12EA8164 /* SwatchDetailView.swift */; };
+		C77D3E8683343F10325E4595 /* DeleteToolbarButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845C56DC8B8D76DF457BB359 /* DeleteToolbarButton.swift */; };
 		CDD2943BBA7FDC5C348C99D6 /* PenListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 024768ED8F74C580A7CD2F97 /* PenListView.swift */; };
 		CEB456C64C434592CC285526 /* Swatch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 643A6179D8CC1708E986D3B9 /* Swatch.swift */; };
 		D161E81F722382A9C91A3D30 /* InkDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41A2693D1316CFD3C5267CF6 /* InkDetailView.swift */; };
@@ -76,6 +77,7 @@
 		7624332A8112A8A5D6C32867 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		7A77DCEC498D492F4EC1E535 /* Ink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Ink.swift; sourceTree = "<group>"; };
 		7A8EB5B2C9E33330BAEAF27F /* StatusBadge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusBadge.swift; sourceTree = "<group>"; };
+		845C56DC8B8D76DF457BB359 /* DeleteToolbarButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteToolbarButton.swift; sourceTree = "<group>"; };
 		85EE12422A83F90D651310FE /* CurrentlyInkedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentlyInkedView.swift; sourceTree = "<group>"; };
 		8E54A15A7F484CFB12EA8164 /* SwatchDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwatchDetailView.swift; sourceTree = "<group>"; };
 		8E80882F71B5CED8B8094D60 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -189,6 +191,7 @@
 				C6A57626DB3AF848021B03E2 /* ColorSwatchView.swift */,
 				9EFF61AC206020822BB9F0FF /* Date+Abbreviated.swift */,
 				285E2CAD84B810EC1F538D90 /* Decimal+PriceText.swift */,
+				845C56DC8B8D76DF457BB359 /* DeleteToolbarButton.swift */,
 				9D93D5A98AFAFF6999D3BD90 /* ImagePickerButton.swift */,
 				D570F03333B526DB04FD5CC3 /* PhotoSection.swift */,
 				CC4C792527F32DA034CA27EA /* PurchasableItem.swift */,
@@ -338,6 +341,7 @@
 				8D2B1E6A9CDF57C88B55B923 /* CurrentlyInkedView.swift in Sources */,
 				2FCFBBD1805FB2876AD16736 /* Date+Abbreviated.swift in Sources */,
 				0147A3EE4535003BDD432E3F /* Decimal+PriceText.swift in Sources */,
+				C77D3E8683343F10325E4595 /* DeleteToolbarButton.swift in Sources */,
 				76C706E099B0DBBABF027857 /* ImagePickerButton.swift in Sources */,
 				0A0417119ECEBED0A8FD516F /* Ink.swift in Sources */,
 				D161E81F722382A9C91A3D30 /* InkDetailView.swift in Sources */,

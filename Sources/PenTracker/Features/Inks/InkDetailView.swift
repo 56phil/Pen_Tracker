@@ -104,5 +104,8 @@ struct InkDetailView: View {
         .sheet(isPresented: $showingSwatchSheet) {
             SwatchEditSheet(presetInk: ink, presetPaper: nil)
         }
+        .deleteToolbarButton(itemDescription: "\(ink.brand) \(ink.colorName)") {
+            context.delete(ink)
+        }
     }
 }

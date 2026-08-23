@@ -36,12 +36,6 @@ struct SwatchDetailView: View {
             }
 
             PhotoSection(photo: swatch.photo, maxHeight: 240)
-
-            Section {
-                Button("Delete Swatch", role: .destructive) {
-                    context.delete(swatch)
-                }
-            }
         }
         .formStyle(.grouped)
         .navigationTitle("Swatch")
@@ -52,6 +46,9 @@ struct SwatchDetailView: View {
         }
         .sheet(isPresented: $showingEdit) {
             SwatchEditSheet(presetInk: nil, presetPaper: nil, swatch: swatch)
+        }
+        .deleteToolbarButton(itemDescription: "this swatch") {
+            context.delete(swatch)
         }
     }
 }

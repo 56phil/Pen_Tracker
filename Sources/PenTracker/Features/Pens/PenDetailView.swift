@@ -95,5 +95,8 @@ struct PenDetailView: View {
         .sheet(isPresented: $showingInkSheet) {
             InkThisPenSheet(presetPen: pen, presetInk: nil)
         }
+        .deleteToolbarButton(itemDescription: "\(pen.brand) \(pen.model)") {
+            context.delete(pen)
+        }
     }
 }

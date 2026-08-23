@@ -1,8 +1,14 @@
 import SwiftUI
+import SwiftData
 
 struct PenListView: View {
+    @Environment(\.modelContext) private var context
+    @State private var pens: [Pen] = []
+
     var body: some View {
         CollectionListView<Pen, PenRowView, PenEditView, PenDetailView>(
+            items: $pens,
+            refresh: fetchPens,
             navigationTitle: "Pens",
             searchPrompt: "Search pens",
             addLabel: "Add Pen",
@@ -17,5 +23,11 @@ struct PenListView: View {
             addSheet: { PenEditView(pen: nil) },
             detail: { pen in PenDetailView(pen: pen) }
         )
+        .onAppear(perform: fetchPens)
+    }
+
+    private func fetchPens() {
+        let descriptor = FetchDescriptor<Pen>(sortBy: [SortDescriptor(\.brand)])
+        pens = (try? context.fetch(descriptor)) ?? []
     }
 }

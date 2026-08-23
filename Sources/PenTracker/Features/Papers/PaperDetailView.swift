@@ -67,5 +67,8 @@ struct PaperDetailView: View {
         .sheet(isPresented: $showingSwatchSheet) {
             SwatchEditSheet(presetInk: nil, presetPaper: paper)
         }
+        .deleteToolbarButton(itemDescription: "\(paper.brand) \(paper.lineName)") {
+            context.delete(paper)
+        }
     }
 }

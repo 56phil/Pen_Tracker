@@ -1,8 +1,14 @@
 import SwiftUI
+import SwiftData
 
 struct InkListView: View {
+    @Environment(\.modelContext) private var context
+    @State private var inks: [Ink] = []
+
     var body: some View {
         CollectionListView<Ink, InkRowView, InkEditView, InkDetailView>(
+            items: $inks,
+            refresh: fetchInks,
             navigationTitle: "Inks",
             searchPrompt: "Search inks",
             addLabel: "Add Ink",
@@ -17,5 +23,11 @@ struct InkListView: View {
             addSheet: { InkEditView(ink: nil) },
             detail: { ink in InkDetailView(ink: ink) }
         )
+        .onAppear(perform: fetchInks)
+    }
+
+    private func fetchInks() {
+        let descriptor = FetchDescriptor<Ink>(sortBy: [SortDescriptor(\.brand)])
+        inks = (try? context.fetch(descriptor)) ?? []
     }
 }

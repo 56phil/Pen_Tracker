@@ -72,6 +72,11 @@ struct InkThisPenSheet: View {
         let inking = Inking(pen: pen, ink: ink, filledDate: filledDate,
                              notes: notes.isEmpty ? nil : notes)
         context.insert(inking)
+        // Setting the inverse (Inking.pen) above doesn't retroactively
+        // notify observers of Pen.inkings, so views reading
+        // pen.currentInking (e.g. PenDetailView) don't refresh unless we
+        // touch the array on the "one" side directly.
+        pen.inkings.append(inking)
         dismiss()
     }
 }

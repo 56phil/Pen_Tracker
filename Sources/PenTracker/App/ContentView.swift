@@ -14,7 +14,7 @@ struct ContentView: View {
             NavigationStack {
                 switch selection {
                 case .dashboard:
-                    CurrentlyInkedView()
+                    DashboardView()
                 case .pens:
                     PenListView()
                 case .inks:

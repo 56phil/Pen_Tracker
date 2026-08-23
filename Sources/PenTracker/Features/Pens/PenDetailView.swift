@@ -1,5 +1,5 @@
-import SwiftUI
 import SwiftData
+import SwiftUI
 
 struct PenDetailView: View {
     @Bindable var pen: Pen
@@ -7,6 +7,7 @@ struct PenDetailView: View {
 
     @State private var showingEdit = false
     @State private var showingInkSheet = false
+    @State private var editingInking: Inking?
 
     private var sortedInkings: [Inking] {
         pen.inkings.sorted { $0.filledDate > $1.filledDate }
@@ -44,34 +45,45 @@ struct PenDetailView: View {
             if !sortedInkings.isEmpty {
                 Section("Inking History") {
                     ForEach(sortedInkings) { inking in
-                        HStack {
-                            ColorSwatchView(hex: inking.ink?.colorHex)
-                            VStack(alignment: .leading) {
-                                Text(inking.ink.map { "\($0.brand) \($0.colorName)" } ?? "Unknown ink")
-                                Text(inking.filledDate, style: .date)
-                                    .font(.caption)
-                                    .foregroundStyle(.secondary)
-                                if let notes = inking.notes, !notes.isEmpty {
-                                    Text(notes)
+                        Button {
+                            editingInking = inking
+                        } label: {
+                            HStack {
+                                ColorSwatchView(hex: inking.ink?.colorHex)
+                                VStack(alignment: .leading) {
+                                    Text(
+                                        inking.ink.map { "\($0.brand) \($0.colorName)" }
+                                            ?? "Unknown ink")
+                                    Text(inking.filledDate, style: .date)
+                                        .font(.caption)
+                                        .foregroundStyle(.secondary)
+                                    if let notes = inking.notes, !notes.isEmpty {
+                                        Text(notes)
+                                            .font(.caption)
+                                            .foregroundStyle(.secondary)
+                                    }
+                                    RatingDisplayView(rating: inking.rating)
+                                        .padding(.top, 2)
+                                }
+                                Spacer()
+                                if inking.isCurrent {
+                                    Text("Current").font(.caption).foregroundStyle(.green)
+                                } else if let emptied = inking.emptiedDate {
+                                    Text("Until \(emptied.abbreviated)")
                                         .font(.caption)
                                         .foregroundStyle(.secondary)
                                 }
                             }
-                            Spacer()
-                            if inking.isCurrent {
-                                Text("Current").font(.caption).foregroundStyle(.green)
-                            } else if let emptied = inking.emptiedDate {
-                                Text("Until \(emptied.abbreviated)")
-                                    .font(.caption)
-                                    .foregroundStyle(.secondary)
-                            }
+                            .contentShape(Rectangle())
                         }
+                        .buttonStyle(.plain)
                     }
                 }
             }
 
             if let vendor = pen.vendor, !vendor.isEmpty {
-                PurchaseInfoView(vendor: vendor, price: pen.price, date: pen.purchaseDate, url: pen.purchaseURL)
+                PurchaseInfoView(
+                    vendor: vendor, price: pen.price, date: pen.purchaseDate, url: pen.purchaseURL)
             }
 
             if !pen.notes.isEmpty {
@@ -94,6 +106,9 @@ struct PenDetailView: View {
         }
         .sheet(isPresented: $showingInkSheet) {
             InkThisPenSheet(presetPen: pen, presetInk: nil)
+        }
+        .sheet(item: $editingInking) { inking in
+            InkingEditSheet(inking: inking)
         }
         .deleteToolbarButton(itemDescription: "\(pen.brand) \(pen.model)") {
             context.delete(pen)

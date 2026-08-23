@@ -15,6 +15,7 @@ struct InkThisPenSheet: View {
     @State private var selectedInk: Ink?
     @State private var filledDate: Date = .now
     @State private var notes = ""
+    @State private var rating: Int?
 
     var body: some View {
         NavigationStack {
@@ -43,6 +44,10 @@ struct InkThisPenSheet: View {
 
                 DatePicker("Filled Date", selection: $filledDate, in: ...Date.now, displayedComponents: .date)
 
+                Section("Rating") {
+                    RatingView(rating: $rating)
+                }
+
                 Section("Notes") {
                     TextEditor(text: $notes).frame(minHeight: 60)
                 }
@@ -70,7 +75,7 @@ struct InkThisPenSheet: View {
         }
 
         let inking = Inking(pen: pen, ink: ink, filledDate: filledDate,
-                             notes: notes.isEmpty ? nil : notes)
+                             notes: notes.isEmpty ? nil : notes, rating: rating)
         context.insert(inking)
         // Setting the inverse (Inking.pen) above doesn't retroactively
         // notify observers of Pen.inkings, so views reading

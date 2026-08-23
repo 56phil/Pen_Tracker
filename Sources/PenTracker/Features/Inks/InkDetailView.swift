@@ -1,6 +1,6 @@
-import SwiftUI
-import SwiftData
 import Foundation
+import SwiftData
+import SwiftUI
 
 struct InkDetailView: View {
     @Bindable var ink: Ink
@@ -9,6 +9,7 @@ struct InkDetailView: View {
     @State private var showingEdit = false
     @State private var showingInkSheet = false
     @State private var showingSwatchSheet = false
+    @State private var editingInking: Inking?
 
     private var sortedInkings: [Inking] {
         ink.inkings.sorted { $0.filledDate > $1.filledDate }
@@ -41,24 +42,32 @@ struct InkDetailView: View {
                 Button("Ink a Pen With This…") { showingInkSheet = true }
                 ForEach(sortedInkings) { inking in
                     if let pen = inking.pen {
-                        HStack {
-                            VStack(alignment: .leading) {
-                                Text("\(pen.brand) \(pen.model)")
-                                if let notes = inking.notes, !notes.isEmpty {
-                                    Text(notes)
+                        Button {
+                            editingInking = inking
+                        } label: {
+                            HStack {
+                                VStack(alignment: .leading) {
+                                    Text("\(pen.brand) \(pen.model)")
+                                    if let notes = inking.notes, !notes.isEmpty {
+                                        Text(notes)
+                                            .font(.caption)
+                                            .foregroundStyle(.secondary)
+                                    }
+                                    RatingDisplayView(rating: inking.rating)
+                                        .padding(.top, 2)
+                                }
+                                Spacer()
+                                if inking.isCurrent {
+                                    Text("Current").font(.caption).foregroundStyle(.green)
+                                } else {
+                                    Text(inking.filledDate, style: .date)
                                         .font(.caption)
                                         .foregroundStyle(.secondary)
                                 }
                             }
-                            Spacer()
-                            if inking.isCurrent {
-                                Text("Current").font(.caption).foregroundStyle(.green)
-                            } else {
-                                Text(inking.filledDate, style: .date)
-                                    .font(.caption)
-                                    .foregroundStyle(.secondary)
-                            }
+                            .contentShape(Rectangle())
                         }
+                        .buttonStyle(.plain)
                     }
                 }
             }
@@ -77,7 +86,8 @@ struct InkDetailView: View {
             }
 
             if let vendor = ink.vendor, !vendor.isEmpty {
-                PurchaseInfoView(vendor: vendor, price: ink.price, date: ink.purchaseDate, url: ink.purchaseURL)
+                PurchaseInfoView(
+                    vendor: vendor, price: ink.price, date: ink.purchaseDate, url: ink.purchaseURL)
             }
 
             if !ink.notes.isEmpty {
@@ -100,6 +110,9 @@ struct InkDetailView: View {
         }
         .sheet(isPresented: $showingInkSheet) {
             InkThisPenSheet(presetPen: nil, presetInk: ink)
+        }
+        .sheet(item: $editingInking) { inking in
+            InkingEditSheet(inking: inking)
         }
         .sheet(isPresented: $showingSwatchSheet) {
             SwatchEditSheet(presetInk: ink, presetPaper: nil)

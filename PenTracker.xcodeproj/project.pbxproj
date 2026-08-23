@@ -14,10 +14,12 @@
 		2E24A2C87CD3C5ADE49E4380 /* PenTrackerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BBC9901E7E4720FDFCDEDED /* PenTrackerApp.swift */; };
 		2F12D98146AD977AD119F91E /* PaperEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C7DA06BB2C1B3F206092143 /* PaperEditView.swift */; };
 		2FCFBBD1805FB2876AD16736 /* Date+Abbreviated.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EFF61AC206020822BB9F0FF /* Date+Abbreviated.swift */; };
+		31238BC4007021D2746037CD /* DashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB07C3FBAFBA6D6E45338435 /* DashboardView.swift */; };
 		32F2F13ADE59CF497DD660D2 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7624332A8112A8A5D6C32867 /* ContentView.swift */; };
 		3667426859C15F6A6C838CFE /* PurchaseInfoFormState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63721A34488B63DB10D8E8A7 /* PurchaseInfoFormState.swift */; };
 		3FFD5F8577F21D9CE264FCB9 /* PenEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E1910B3E70B6C91481EA13F /* PenEditView.swift */; };
 		4428675AB066C5A1E24D5EB1 /* StatusBadge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A8EB5B2C9E33330BAEAF27F /* StatusBadge.swift */; };
+		44439D4D6DEEE352236A8F13 /* InkingEditSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABBA344BE03314D3A6A9E406 /* InkingEditSheet.swift */; };
 		456C5DD29834155C632A01DE /* InkThisPenSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F9815B0C647F6582E69F805 /* InkThisPenSheet.swift */; };
 		4C418E0FCFA5E696326E4DE3 /* PurchaseInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F534928080EBB646575729B5 /* PurchaseInfoView.swift */; };
 		5B7525D63863B06A79C8D659 /* PhotoSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = D570F03333B526DB04FD5CC3 /* PhotoSection.swift */; };
@@ -29,7 +31,6 @@
 		76C706E099B0DBBABF027857 /* ImagePickerButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D93D5A98AFAFF6999D3BD90 /* ImagePickerButton.swift */; };
 		8018924704AC81EADC561C0A /* InkListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5345DBBD67131D465533E463 /* InkListView.swift */; };
 		8C7B55B60C1EA371C4279F78 /* RatingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C6199FE0AF9B740D8E556F3 /* RatingView.swift */; };
-		8D2B1E6A9CDF57C88B55B923 /* CurrentlyInkedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85EE12422A83F90D651310FE /* CurrentlyInkedView.swift */; };
 		94017A995B537D21609E9397 /* CollectionListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF4B8229C864AEC465C5A702 /* CollectionListView.swift */; };
 		AA1401EE0B2B66A4CC7D64A5 /* Paper.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBA0BDACBD989BB7B9BC2030 /* Paper.swift */; };
 		ABC1834F184C1E2336D47D2D /* PenDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9748C846569014AE080321B6 /* PenDetailView.swift */; };
@@ -78,13 +79,13 @@
 		7A77DCEC498D492F4EC1E535 /* Ink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Ink.swift; sourceTree = "<group>"; };
 		7A8EB5B2C9E33330BAEAF27F /* StatusBadge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusBadge.swift; sourceTree = "<group>"; };
 		845C56DC8B8D76DF457BB359 /* DeleteToolbarButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteToolbarButton.swift; sourceTree = "<group>"; };
-		85EE12422A83F90D651310FE /* CurrentlyInkedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentlyInkedView.swift; sourceTree = "<group>"; };
 		8E54A15A7F484CFB12EA8164 /* SwatchDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwatchDetailView.swift; sourceTree = "<group>"; };
 		8E80882F71B5CED8B8094D60 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		9748C846569014AE080321B6 /* PenDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PenDetailView.swift; sourceTree = "<group>"; };
 		9D93D5A98AFAFF6999D3BD90 /* ImagePickerButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePickerButton.swift; sourceTree = "<group>"; };
 		9EFF61AC206020822BB9F0FF /* Date+Abbreviated.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Abbreviated.swift"; sourceTree = "<group>"; };
 		A7FD35ACF38ACEE0D4038379 /* CollectibleItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectibleItem.swift; sourceTree = "<group>"; };
+		ABBA344BE03314D3A6A9E406 /* InkingEditSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InkingEditSheet.swift; sourceTree = "<group>"; };
 		AEF43B6E119B064F14832824 /* CollectionStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionStatus.swift; sourceTree = "<group>"; };
 		AF4B8229C864AEC465C5A702 /* CollectionListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionListView.swift; sourceTree = "<group>"; };
 		BBA0BDACBD989BB7B9BC2030 /* Paper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Paper.swift; sourceTree = "<group>"; };
@@ -94,6 +95,7 @@
 		CC4C792527F32DA034CA27EA /* PurchasableItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchasableItem.swift; sourceTree = "<group>"; };
 		D5118B4A9947BB43F219461B /* SidebarSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SidebarSection.swift; sourceTree = "<group>"; };
 		D570F03333B526DB04FD5CC3 /* PhotoSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoSection.swift; sourceTree = "<group>"; };
+		DB07C3FBAFBA6D6E45338435 /* DashboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardView.swift; sourceTree = "<group>"; };
 		E066DBBD3FEE16F3FA662B16 /* PaperListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaperListView.swift; sourceTree = "<group>"; };
 		EA16BFE20A957AE1BB5D5AB9 /* PaperRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaperRowView.swift; sourceTree = "<group>"; };
 		F534928080EBB646575729B5 /* PurchaseInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseInfoView.swift; sourceTree = "<group>"; };
@@ -218,7 +220,7 @@
 		AC8A1453E6D9A63504B4C421 /* Dashboard */ = {
 			isa = PBXGroup;
 			children = (
-				85EE12422A83F90D651310FE /* CurrentlyInkedView.swift */,
+				DB07C3FBAFBA6D6E45338435 /* DashboardView.swift */,
 			);
 			path = Dashboard;
 			sourceTree = "<group>";
@@ -226,6 +228,7 @@
 		ACDC06B1C2C3DC2980C5E5EC /* Inkings */ = {
 			isa = PBXGroup;
 			children = (
+				ABBA344BE03314D3A6A9E406 /* InkingEditSheet.swift */,
 				2F9815B0C647F6582E69F805 /* InkThisPenSheet.swift */,
 			);
 			path = Inkings;
@@ -338,7 +341,7 @@
 				0EC967E35C64D2E411CF9FE8 /* Color+Hex.swift in Sources */,
 				6451363F258C9676E7B16A42 /* ColorSwatchView.swift in Sources */,
 				32F2F13ADE59CF497DD660D2 /* ContentView.swift in Sources */,
-				8D2B1E6A9CDF57C88B55B923 /* CurrentlyInkedView.swift in Sources */,
+				31238BC4007021D2746037CD /* DashboardView.swift in Sources */,
 				2FCFBBD1805FB2876AD16736 /* Date+Abbreviated.swift in Sources */,
 				0147A3EE4535003BDD432E3F /* Decimal+PriceText.swift in Sources */,
 				C77D3E8683343F10325E4595 /* DeleteToolbarButton.swift in Sources */,
@@ -350,6 +353,7 @@
 				F3C2F9DFAD50DC78322529B4 /* InkRowView.swift in Sources */,
 				456C5DD29834155C632A01DE /* InkThisPenSheet.swift in Sources */,
 				F32E48903B92F2E33259193F /* Inking.swift in Sources */,
+				44439D4D6DEEE352236A8F13 /* InkingEditSheet.swift in Sources */,
 				E14CF3283B329D0A8096C0D3 /* ModelContainer+PenTracker.swift in Sources */,
 				AA1401EE0B2B66A4CC7D64A5 /* Paper.swift in Sources */,
 				FE0D9BB5630F5456402435C4 /* PaperDetailView.swift in Sources */,

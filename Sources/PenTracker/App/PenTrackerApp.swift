@@ -9,5 +9,8 @@ struct PenTrackerApp: App {
             ContentView()
         }
         .modelContainer(container)
+        .commands {
+            KeyboardCommands()
+        }
     }
 }

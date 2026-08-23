@@ -4,6 +4,7 @@ import SwiftUI
 struct PaperDetailView: View {
     @Bindable var paper: Paper
     @Environment(\.modelContext) private var context
+    @Environment(\.dismiss) private var dismiss
 
     @State private var showingEdit = false
     @State private var showingSwatchSheet = false
@@ -15,22 +16,23 @@ struct PaperDetailView: View {
     var body: some View {
         Form {
             Section("Details") {
-                LabeledContent("Brand", value: paper.brand)
-                LabeledContent("Line", value: paper.lineName)
-                LabeledContent("Format", value: paper.format)
+                KeyboardFocusableRow(label: "Brand") { Text(paper.brand) }
+                KeyboardFocusableRow(label: "Line") { Text(paper.lineName) }
+                KeyboardFocusableRow(label: "Format") { Text(paper.format) }
                 if let gsm = paper.weightGSM {
-                    LabeledContent("Weight", value: "\(gsm) gsm")
+                    KeyboardFocusableRow(label: "Weight") { Text("\(gsm) gsm") }
                 }
                 if let finish = paper.colorOrFinish, !finish.isEmpty {
-                    LabeledContent("Color / Finish", value: finish)
+                    KeyboardFocusableRow(label: "Color / Finish") { Text(finish) }
                 }
-                LabeledContent("Quantity", value: "\(paper.quantity)")
-                LabeledContent("Status") { StatusBadge(status: paper.status) }
-                LabeledContent("Rating") { RatingBadgeView(rating: paper.rating) }
+                KeyboardFocusableRow(label: "Quantity") { Text("\(paper.quantity)") }
+                KeyboardFocusableRow(label: "Status") { StatusBadge(status: paper.status) }
+                KeyboardFocusableRow(label: "Rating") { RatingBadgeView(rating: paper.rating) }
             }
 
             Section("Swatch Tests") {
                 Button("Swatch an Ink on This…") { showingSwatchSheet = true }
+                    .help("Swatch on Paper (⌘⇧W)")
                 ForEach(sortedSwatches) { swatch in
                     if let ink = swatch.ink {
                         HStack {
@@ -59,11 +61,19 @@ struct PaperDetailView: View {
         }
         .formStyle(.grouped)
         .navigationTitle("\(paper.brand) \(paper.lineName)")
+        .navigationBarBackButtonHidden(true)
         .toolbar {
             ToolbarItem(placement: .primaryAction) {
                 Button("Edit") { showingEdit = true }
+                    .help("Edit (⌘E)")
+            }
+            ToolbarItem(placement: .navigation) {
+                BackBarButton { dismiss() }
             }
         }
+        .keyboardEditAction { showingEdit = true }
+        .keyboardSwatchAction { showingSwatchSheet = true }
+        .keyboardBackAction { dismiss() }
         .sheet(isPresented: $showingEdit) {
             PaperEditView(paper: paper)
         }

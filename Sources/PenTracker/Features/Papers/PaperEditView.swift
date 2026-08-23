@@ -1,5 +1,5 @@
-import SwiftUI
 import SwiftData
+import SwiftUI
 
 struct PaperEditView: View {
     @Environment(\.modelContext) private var context
@@ -21,6 +21,8 @@ struct PaperEditView: View {
 
     private var isNew: Bool { paper == nil }
 
+    private var canSave: Bool { !brand.isEmpty && !format.isEmpty }
+
     var body: some View {
         NavigationStack {
             Form {
@@ -31,7 +33,7 @@ struct PaperEditView: View {
                     TextField("Weight (gsm)", text: $weightText)
                     TextField("Color / Finish", text: $colorOrFinish)
                     Stepper("Quantity: \(quantity)", value: $quantity, in: 0...999)
-                    Picker("Status", selection: $status) {
+                    ArrowPicker("Status", selection: $status, options: CollectionStatus.allCases) {
                         ForEach(CollectionStatus.allCases) { s in
                             Text(s.label).tag(s)
                         }
@@ -57,15 +59,20 @@ struct PaperEditView: View {
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
                     Button("Cancel") { dismiss() }
+                        .help("Cancel (Esc)")
                 }
                 ToolbarItem(placement: .confirmationAction) {
                     Button("Save") { save() }
-                        .disabled(brand.isEmpty || format.isEmpty)
+                        .disabled(!canSave)
+                        .help("Save (⌘S)")
                 }
             }
         }
         .onAppear(perform: loadIfEditing)
         .frame(minWidth: 420, minHeight: 520)
+        .formKeyboardShortcuts(
+            save: { if canSave { save() } },
+            cancel: { dismiss() })
     }
 
     private func loadIfEditing() {
@@ -102,14 +109,15 @@ struct PaperEditView: View {
             paper.notes = notes
             paper.photo = photo
         } else {
-            let newPaper = Paper(brand: brand, lineName: lineName, weightGSM: weight,
-                                 colorOrFinish: finish, format: format, quantity: quantity,
-                                 status: status, rating: rating,
-                                 purchaseDate: purchaseInfo.resolvedDate,
-                                 price: purchaseInfo.resolvedPrice,
-                                 vendor: purchaseInfo.resolvedVendor,
-                                 purchaseURL: purchaseInfo.resolvedURL,
-                                 notes: notes, photo: photo)
+            let newPaper = Paper(
+                brand: brand, lineName: lineName, weightGSM: weight,
+                colorOrFinish: finish, format: format, quantity: quantity,
+                status: status, rating: rating,
+                purchaseDate: purchaseInfo.resolvedDate,
+                price: purchaseInfo.resolvedPrice,
+                vendor: purchaseInfo.resolvedVendor,
+                purchaseURL: purchaseInfo.resolvedURL,
+                notes: notes, photo: photo)
             context.insert(newPaper)
         }
         dismiss()

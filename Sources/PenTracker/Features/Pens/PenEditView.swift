@@ -1,5 +1,5 @@
-import SwiftUI
 import SwiftData
+import SwiftUI
 
 struct PenEditView: View {
     @Environment(\.modelContext) private var context
@@ -20,6 +20,8 @@ struct PenEditView: View {
 
     private var isNew: Bool { pen == nil }
 
+    private var canSave: Bool { !brand.isEmpty && !model.isEmpty }
+
     var body: some View {
         NavigationStack {
             Form {
@@ -29,7 +31,7 @@ struct PenEditView: View {
                     TextField("Color", text: $color)
                     TextField("Nib / Tip (e.g. Fine, 1.1 Stub)", text: $nibSizeOrTip)
                     TextField("Filling Mechanism", text: $fillingMechanism)
-                    Picker("Status", selection: $status) {
+                    ArrowPicker("Status", selection: $status, options: CollectionStatus.allCases) {
                         ForEach(CollectionStatus.allCases) { s in
                             Text(s.label).tag(s)
                         }
@@ -55,15 +57,20 @@ struct PenEditView: View {
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
                     Button("Cancel") { dismiss() }
+                        .help("Cancel (Esc)")
                 }
                 ToolbarItem(placement: .confirmationAction) {
                     Button("Save") { save() }
-                        .disabled(brand.isEmpty || model.isEmpty)
+                        .disabled(!canSave)
+                        .help("Save (⌘S)")
                 }
             }
         }
         .onAppear(perform: loadIfEditing)
         .frame(minWidth: 420, minHeight: 520)
+        .formKeyboardShortcuts(
+            save: { if canSave { save() } },
+            cancel: { dismiss() })
     }
 
     private func loadIfEditing() {
@@ -93,14 +100,15 @@ struct PenEditView: View {
             pen.notes = notes
             pen.photo = photo
         } else {
-            let newPen = Pen(brand: brand, model: model, color: color,
-                              nibSizeOrTip: nibSizeOrTip, fillingMechanism: fillingMechanism,
-                              status: status, rating: rating,
-                              purchaseDate: purchaseInfo.resolvedDate,
-                              price: purchaseInfo.resolvedPrice,
-                              vendor: purchaseInfo.resolvedVendor,
-                              purchaseURL: purchaseInfo.resolvedURL,
-                              notes: notes, photo: photo)
+            let newPen = Pen(
+                brand: brand, model: model, color: color,
+                nibSizeOrTip: nibSizeOrTip, fillingMechanism: fillingMechanism,
+                status: status, rating: rating,
+                purchaseDate: purchaseInfo.resolvedDate,
+                price: purchaseInfo.resolvedPrice,
+                vendor: purchaseInfo.resolvedVendor,
+                purchaseURL: purchaseInfo.resolvedURL,
+                notes: notes, photo: photo)
             context.insert(newPen)
         }
         dismiss()

@@ -5,6 +5,7 @@ import SwiftUI
 struct InkDetailView: View {
     @Bindable var ink: Ink
     @Environment(\.modelContext) private var context
+    @Environment(\.dismiss) private var dismiss
 
     @State private var showingEdit = false
     @State private var showingInkSheet = false
@@ -22,25 +23,24 @@ struct InkDetailView: View {
     var body: some View {
         Form {
             Section("Details") {
-                LabeledContent("Brand", value: ink.brand)
-                LabeledContent("Line", value: ink.lineName)
-                LabeledContent("Color", value: ink.colorName)
-                HStack {
-                    Text("Swatch")
-                    Spacer()
+                KeyboardFocusableRow(label: "Brand") { Text(ink.brand) }
+                KeyboardFocusableRow(label: "Line") { Text(ink.lineName) }
+                KeyboardFocusableRow(label: "Color") { Text(ink.colorName) }
+                KeyboardFocusableRow(label: "Swatch") {
                     ColorSwatchView(hex: ink.colorHex, size: 20)
                 }
-                LabeledContent("Package", value: ink.packageType.label)
+                KeyboardFocusableRow(label: "Package") { Text(ink.packageType.label) }
                 if let volume = ink.volumeML {
-                    LabeledContent("Volume", value: "\(Int(volume)) mL")
+                    KeyboardFocusableRow(label: "Volume") { Text("\(Int(volume)) mL") }
                 }
-                LabeledContent("Quantity Owned", value: "\(ink.quantity)")
-                LabeledContent("Status") { StatusBadge(status: ink.status) }
-                LabeledContent("Rating") { RatingBadgeView(rating: ink.rating) }
+                KeyboardFocusableRow(label: "Quantity Owned") { Text("\(ink.quantity)") }
+                KeyboardFocusableRow(label: "Status") { StatusBadge(status: ink.status) }
+                KeyboardFocusableRow(label: "Rating") { RatingBadgeView(rating: ink.rating) }
             }
 
             Section("Used In") {
                 Button("Ink a Pen With This…") { showingInkSheet = true }
+                    .help("Ink This Pen (⌘I)")
                 ForEach(sortedInkings) { inking in
                     if let pen = inking.pen {
                         Button {
@@ -75,6 +75,7 @@ struct InkDetailView: View {
 
             Section("Swatch Tests") {
                 Button("Swatch on Paper…") { showingSwatchSheet = true }
+                    .help("Swatch on Paper (⌘⇧W)")
                 ForEach(sortedSwatches) { swatch in
                     if let paper = swatch.paper {
                         HStack {
@@ -101,11 +102,20 @@ struct InkDetailView: View {
         }
         .formStyle(.grouped)
         .navigationTitle("\(ink.brand) \(ink.colorName)")
+        .navigationBarBackButtonHidden(true)
         .toolbar {
             ToolbarItem(placement: .primaryAction) {
                 Button("Edit") { showingEdit = true }
+                    .help("Edit (⌘E)")
+            }
+            ToolbarItem(placement: .navigation) {
+                BackBarButton { dismiss() }
             }
         }
+        .keyboardEditAction { showingEdit = true }
+        .keyboardInkAction { showingInkSheet = true }
+        .keyboardSwatchAction { showingSwatchSheet = true }
+        .keyboardBackAction { dismiss() }
         .sheet(isPresented: $showingEdit) {
             InkEditView(ink: ink)
         }

@@ -19,11 +19,18 @@ struct SwatchEditSheet: View {
     @State private var notes = ""
     @State private var photo: Data?
 
+    private var canSave: Bool {
+        (presetInk ?? selectedInk) != nil && (presetPaper ?? selectedPaper) != nil
+    }
+
     var body: some View {
         NavigationStack {
             Form {
                 if presetInk == nil {
-                    Picker("Ink", selection: $selectedInk) {
+                    ArrowPicker(
+                        "Ink", selection: $selectedInk,
+                        options: [nil] + allInks.map { Ink?.some($0) }
+                    ) {
                         Text("Choose an ink").tag(Ink?.none)
                         ForEach(allInks) { ink in
                             Text("\(ink.brand) \(ink.colorName)").tag(Ink?.some(ink))
@@ -34,7 +41,10 @@ struct SwatchEditSheet: View {
                 }
 
                 if presetPaper == nil {
-                    Picker("Paper", selection: $selectedPaper) {
+                    ArrowPicker(
+                        "Paper", selection: $selectedPaper,
+                        options: [nil] + allPapers.map { Paper?.some($0) }
+                    ) {
                         Text("Choose a paper").tag(Paper?.none)
                         ForEach(allPapers) { paper in
                             Text("\(paper.brand) \(paper.lineName)").tag(Paper?.some(paper))
@@ -63,17 +73,20 @@ struct SwatchEditSheet: View {
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
                     Button("Cancel") { dismiss() }
+                        .help("Cancel (Esc)")
                 }
                 ToolbarItem(placement: .confirmationAction) {
                     Button("Save") { save() }
-                        .disabled(
-                            (presetInk ?? selectedInk) == nil
-                                || (presetPaper ?? selectedPaper) == nil)
+                        .disabled(!canSave)
+                        .help("Save (⌘S)")
                 }
             }
         }
         .onAppear(perform: loadIfEditing)
         .frame(minWidth: 420, minHeight: 460)
+        .formKeyboardShortcuts(
+            save: { if canSave { save() } },
+            cancel: { dismiss() })
     }
 
     private func loadIfEditing() {

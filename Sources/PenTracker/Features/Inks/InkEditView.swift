@@ -1,5 +1,5 @@
-import SwiftUI
 import SwiftData
+import SwiftUI
 
 struct InkEditView: View {
     @Environment(\.modelContext) private var context
@@ -22,6 +22,8 @@ struct InkEditView: View {
 
     private var isNew: Bool { ink == nil }
 
+    private var canSave: Bool { !brand.isEmpty && !colorName.isEmpty }
+
     var body: some View {
         NavigationStack {
             Form {
@@ -33,14 +35,14 @@ struct InkEditView: View {
                         TextField("Hex (e.g. 1B4B8A)", text: $colorHex)
                         ColorSwatchView(hex: colorHex, size: 20)
                     }
-                    Picker("Package", selection: $packageType) {
+                    ArrowPicker("Package", selection: $packageType, options: InkPackageType.allCases) {
                         ForEach(InkPackageType.allCases) { p in
                             Text(p.label).tag(p)
                         }
                     }
                     TextField("Volume (mL)", text: $volumeText)
                     Stepper("Quantity Owned: \(quantity)", value: $quantity, in: 0...99)
-                    Picker("Status", selection: $status) {
+                    ArrowPicker("Status", selection: $status, options: CollectionStatus.allCases) {
                         ForEach(CollectionStatus.allCases) { s in
                             Text(s.label).tag(s)
                         }
@@ -66,15 +68,20 @@ struct InkEditView: View {
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
                     Button("Cancel") { dismiss() }
+                        .help("Cancel (Esc)")
                 }
                 ToolbarItem(placement: .confirmationAction) {
                     Button("Save") { save() }
-                        .disabled(brand.isEmpty || colorName.isEmpty)
+                        .disabled(!canSave)
+                        .help("Save (⌘S)")
                 }
             }
         }
         .onAppear(perform: loadIfEditing)
         .frame(minWidth: 420, minHeight: 560)
+        .formKeyboardShortcuts(
+            save: { if canSave { save() } },
+            cancel: { dismiss() })
     }
 
     private func loadIfEditing() {
@@ -113,14 +120,15 @@ struct InkEditView: View {
             ink.notes = notes
             ink.photo = photo
         } else {
-            let newInk = Ink(brand: brand, lineName: lineName, colorName: colorName,
-                             colorHex: hex, packageType: packageType, volumeML: volume,
-                             quantity: quantity, status: status, rating: rating,
-                             purchaseDate: purchaseInfo.resolvedDate,
-                             price: purchaseInfo.resolvedPrice,
-                             vendor: purchaseInfo.resolvedVendor,
-                             purchaseURL: purchaseInfo.resolvedURL,
-                             notes: notes, photo: photo)
+            let newInk = Ink(
+                brand: brand, lineName: lineName, colorName: colorName,
+                colorHex: hex, packageType: packageType, volumeML: volume,
+                quantity: quantity, status: status, rating: rating,
+                purchaseDate: purchaseInfo.resolvedDate,
+                price: purchaseInfo.resolvedPrice,
+                vendor: purchaseInfo.resolvedVendor,
+                purchaseURL: purchaseInfo.resolvedURL,
+                notes: notes, photo: photo)
             context.insert(newInk)
         }
         dismiss()

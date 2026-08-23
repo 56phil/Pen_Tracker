@@ -4,6 +4,7 @@ import SwiftUI
 struct SwatchDetailView: View {
     @Bindable var swatch: Swatch
     @Environment(\.modelContext) private var context
+    @Environment(\.dismiss) private var dismiss
 
     @State private var showingEdit = false
 
@@ -11,18 +12,22 @@ struct SwatchDetailView: View {
         Form {
             Section("Details") {
                 if let ink = swatch.ink {
-                    HStack {
-                        Text("Ink")
-                        Spacer()
-                        ColorSwatchView(hex: ink.colorHex)
-                        Text("\(ink.brand) \(ink.colorName)")
+                    KeyboardFocusableRow(label: "Ink") {
+                        HStack {
+                            ColorSwatchView(hex: ink.colorHex)
+                            Text("\(ink.brand) \(ink.colorName)")
+                        }
                     }
                 }
                 if let paper = swatch.paper {
-                    LabeledContent("Paper", value: "\(paper.brand) \(paper.lineName)")
+                    KeyboardFocusableRow(label: "Paper") {
+                        Text("\(paper.brand) \(paper.lineName)")
+                    }
                 }
-                LabeledContent("Date Tested", value: swatch.dateTested.abbreviated)
-                LabeledContent("Rating") { RatingBadgeView(rating: swatch.rating) }
+                KeyboardFocusableRow(label: "Date Tested") {
+                    Text(swatch.dateTested.abbreviated)
+                }
+                KeyboardFocusableRow(label: "Rating") { RatingBadgeView(rating: swatch.rating) }
             }
 
             if let notes = swatch.notes, !notes.isEmpty {
@@ -35,11 +40,18 @@ struct SwatchDetailView: View {
         }
         .formStyle(.grouped)
         .navigationTitle("Swatch")
+        .navigationBarBackButtonHidden(true)
         .toolbar {
             ToolbarItem(placement: .primaryAction) {
                 Button("Edit") { showingEdit = true }
+                    .help("Edit (⌘E)")
+            }
+            ToolbarItem(placement: .navigation) {
+                BackBarButton { dismiss() }
             }
         }
+        .keyboardEditAction { showingEdit = true }
+        .keyboardBackAction { dismiss() }
         .sheet(isPresented: $showingEdit) {
             SwatchEditSheet(presetInk: nil, presetPaper: nil, swatch: swatch)
         }

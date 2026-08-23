@@ -4,6 +4,7 @@ import SwiftUI
 struct PenDetailView: View {
     @Bindable var pen: Pen
     @Environment(\.modelContext) private var context
+    @Environment(\.dismiss) private var dismiss
 
     @State private var showingEdit = false
     @State private var showingInkSheet = false
@@ -16,13 +17,13 @@ struct PenDetailView: View {
     var body: some View {
         Form {
             Section("Details") {
-                LabeledContent("Brand", value: pen.brand)
-                LabeledContent("Model", value: pen.model)
-                LabeledContent("Color", value: pen.color)
-                LabeledContent("Nib / Tip", value: pen.nibSizeOrTip)
-                LabeledContent("Filling Mechanism", value: pen.fillingMechanism)
-                LabeledContent("Status") { StatusBadge(status: pen.status) }
-                LabeledContent("Rating") { RatingBadgeView(rating: pen.rating) }
+                KeyboardFocusableRow(label: "Brand") { Text(pen.brand) }
+                KeyboardFocusableRow(label: "Model") { Text(pen.model) }
+                KeyboardFocusableRow(label: "Color") { Text(pen.color) }
+                KeyboardFocusableRow(label: "Nib / Tip") { Text(pen.nibSizeOrTip) }
+                KeyboardFocusableRow(label: "Filling Mechanism") { Text(pen.fillingMechanism) }
+                KeyboardFocusableRow(label: "Status") { StatusBadge(status: pen.status) }
+                KeyboardFocusableRow(label: "Rating") { RatingBadgeView(rating: pen.rating) }
             }
 
             Section("Currently Inked") {
@@ -41,6 +42,7 @@ struct PenDetailView: View {
                     Text("Not currently inked").foregroundStyle(.secondary)
                 }
                 Button("Ink This Pen…") { showingInkSheet = true }
+                    .help("Ink This Pen (⌘I)")
             }
 
             if !sortedInkings.isEmpty {
@@ -97,11 +99,19 @@ struct PenDetailView: View {
         }
         .formStyle(.grouped)
         .navigationTitle("\(pen.brand) \(pen.model)")
+        .navigationBarBackButtonHidden(true)
         .toolbar {
             ToolbarItem(placement: .primaryAction) {
                 Button("Edit") { showingEdit = true }
+                    .help("Edit (⌘E)")
+            }
+            ToolbarItem(placement: .navigation) {
+                BackBarButton { dismiss() }
             }
         }
+        .keyboardEditAction { showingEdit = true }
+        .keyboardInkAction { showingInkSheet = true }
+        .keyboardBackAction { dismiss() }
         .sheet(isPresented: $showingEdit) {
             PenEditView(pen: pen)
         }

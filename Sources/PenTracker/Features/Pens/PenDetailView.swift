@@ -23,14 +23,6 @@ struct PenDetailView: View {
                 LabeledContent("Filling Mechanism", value: pen.fillingMechanism)
                 LabeledContent("Status") { StatusBadge(status: pen.status) }
                 LabeledContent("Rating") { RatingBadgeView(rating: pen.rating) }
-                if let inking = pen.currentInking, let ink = inking.ink {
-                    LabeledContent("Ink") {
-                        HStack {
-                            ColorSwatchView(hex: ink.colorHex)
-                            Text("\(ink.brand) \(ink.colorName)")
-                        }
-                    }
-                }
             }
 
             Section("Currently Inked") {

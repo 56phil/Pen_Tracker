@@ -15,6 +15,10 @@ struct PenRowView: View {
                     Text(pen.color)
                     Text("·")
                     Text(pen.nibSizeOrTip)
+                    if let ink = pen.currentInking?.ink {
+                        Text("·")
+                        Text("\(ink.brand) \(ink.colorName)")
+                    }
                 }
                 .font(.caption)
                 .foregroundStyle(.secondary)

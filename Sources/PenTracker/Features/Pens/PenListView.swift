@@ -1,5 +1,5 @@
-import SwiftUI
 import SwiftData
+import SwiftUI
 
 struct PenListView: View {
     @Environment(\.modelContext) private var context
@@ -16,9 +16,13 @@ struct PenListView: View {
             emptySystemImage: "pencil",
             emptyDescription: "Add your first pen to get started.",
             matchesSearch: { pen, text in
-                pen.brand.localizedCaseInsensitiveContains(text) ||
-                pen.model.localizedCaseInsensitiveContains(text)
+                pen.brand.localizedCaseInsensitiveContains(text)
+                    || pen.model.localizedCaseInsensitiveContains(text)
             },
+            sortOptions: [
+                .brand(), .model(), .rating(), .price(), .purchaseDate(), .dateAdded(),
+            ],
+            filterGroups: [.status(), .rating()],
             row: { pen in PenRowView(pen: pen) },
             addSheet: { PenEditView(pen: nil) },
             detail: { pen in PenDetailView(pen: pen) }

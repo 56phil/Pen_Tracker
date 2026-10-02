@@ -1,5 +1,5 @@
-import SwiftUI
 import SwiftData
+import SwiftUI
 
 struct InkListView: View {
     @Environment(\.modelContext) private var context
@@ -16,9 +16,14 @@ struct InkListView: View {
             emptySystemImage: "drop",
             emptyDescription: "Add your first ink to get started.",
             matchesSearch: { ink, text in
-                ink.brand.localizedCaseInsensitiveContains(text) ||
-                ink.colorName.localizedCaseInsensitiveContains(text)
+                ink.brand.localizedCaseInsensitiveContains(text)
+                    || ink.colorName.localizedCaseInsensitiveContains(text)
             },
+            sortOptions: [
+                .brand(), .line(), .colorName(), .rating(), .price(), .purchaseDate(),
+                .dateAdded(),
+            ],
+            filterGroups: [.status(), .rating(), .packageType()],
             row: { ink in InkRowView(ink: ink) },
             addSheet: { InkEditView(ink: nil) },
             detail: { ink in InkDetailView(ink: ink) }

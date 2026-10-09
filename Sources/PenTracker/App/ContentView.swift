@@ -2,7 +2,7 @@ import SwiftUI
 
 struct ContentView: View {
     @State private var selection: SidebarSection? = .dashboard
-
+    @State private var path: NavigationPath = NavigationPath()
     var body: some View {
         NavigationSplitView {
             List(SidebarSection.allCases, selection: $selection) { section in
@@ -11,22 +11,25 @@ struct ContentView: View {
             }
             .navigationTitle("PenTracker")
         } detail: {
-            NavigationStack {
+            NavigationStack(path: $path) {
                 switch selection {
                 case .dashboard:
                     DashboardView()
                 case .pens:
-                    PenListView()
+                    PenListView(path: $path)
                 case .inks:
-                    InkListView()
+                    InkListView(path: $path)
                 case .papers:
-                    PaperListView()
+                    PaperListView(path: $path)
                 case .swatches:
-                    SwatchGalleryView()
+                    SwatchGalleryView(path: $path)
                 case nil:
                     Text("Select a section")
                         .foregroundStyle(.secondary)
                 }
+            }
+            .onChange(of: selection) { _, _ in
+                path = NavigationPath()
             }
         }
     }

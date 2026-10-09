@@ -32,10 +32,11 @@ struct CollectionListView<
     @State private var filterChoice: [String: String] = [:]
     @State private var showingAdd = false
     @State private var selection: Set<Model.ID> = []
-    @State private var pushItem: Model?
+    @Binding var path: NavigationPath
     @FocusState private var listFocused: Bool
 
     init(
+        path: Binding<NavigationPath>,
         items: Binding<[Model]>,
         refresh: @escaping () -> Void,
         navigationTitle: String,
@@ -51,6 +52,7 @@ struct CollectionListView<
         @ViewBuilder addSheet: @escaping () -> AddContent,
         @ViewBuilder detail: @escaping (Model) -> DetailContent
     ) {
+        _path = path
         _items = items
         self.refresh = refresh
         self.navigationTitle = navigationTitle
@@ -121,8 +123,16 @@ struct CollectionListView<
         if let id = selection.first,
             let item = visibleItems.first(where: { $0.id == id })
         {
-            pushItem = item
+            path.append(item)
         }
+    }
+
+    /// Pops the detail pushed for this section's path, restoring the list.
+    /// A shared, section-scoped path is emptied on every section change, so at
+    /// most one detail is ever shown and a sidebar click always returns to the
+    /// list.
+    private func popToRoot() {
+        path.removeLast(path.count)
     }
 
     var body: some View {
@@ -131,7 +141,7 @@ struct CollectionListView<
                 row(item)
                     .contentShape(Rectangle())
                     .onTapGesture(count: 2) {
-                        pushItem = item
+                        path.append(item)
                     }
                     .contextMenu {
                         Button("Delete", role: .destructive) {
@@ -149,11 +159,16 @@ struct CollectionListView<
             pushSelected()
             return .handled
         }
-        .navigationDestination(item: $pushItem) { item in
+        .navigationDestination(for: Model.self) { item in
             detail(item)
         }
         .navigationTitle(navigationTitle)
         .toolbar {
+            if !path.isEmpty {
+                ToolbarItem(placement: .navigation) {
+                    BackBarButton { popToRoot() }
+                }
+            }
             ToolbarItem(placement: .automatic) {
                 SearchFieldWithTab(text: $searchText, prompt: searchPrompt) {
                     selectFirstRow()

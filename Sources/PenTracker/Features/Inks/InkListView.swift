@@ -4,9 +4,11 @@ import SwiftUI
 struct InkListView: View {
     @Environment(\.modelContext) private var context
     @State private var inks: [Ink] = []
+    @Binding var path: NavigationPath
 
     var body: some View {
         CollectionListView<Ink, InkRowView, InkEditView, InkDetailView>(
+            path: $path,
             items: $inks,
             refresh: fetchInks,
             navigationTitle: "Inks",

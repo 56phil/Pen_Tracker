@@ -4,9 +4,11 @@ import SwiftUI
 struct PaperListView: View {
     @Environment(\.modelContext) private var context
     @State private var papers: [Paper] = []
+    @Binding var path: NavigationPath
 
     var body: some View {
         CollectionListView<Paper, PaperRowView, PaperEditView, PaperDetailView>(
+            path: $path,
             items: $papers,
             refresh: fetchPapers,
             navigationTitle: "Paper",

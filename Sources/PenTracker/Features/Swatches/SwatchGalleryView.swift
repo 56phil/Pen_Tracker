@@ -6,6 +6,7 @@ struct SwatchGalleryView: View {
     @Environment(\.modelContext) private var context
 
     @State private var showingAdd = false
+    @Binding var path: NavigationPath
 
     private let columns = [GridItem(.adaptive(minimum: 220), spacing: 16)]
 
@@ -59,6 +60,11 @@ struct SwatchGalleryView: View {
         }
         .navigationTitle("Swatches")
         .toolbar {
+            if !path.isEmpty {
+                ToolbarItem(placement: .navigation) {
+                    BackBarButton { path.removeLast(path.count) }
+                }
+            }
             ToolbarItem(placement: .primaryAction) {
                 Button {
                     showingAdd = true

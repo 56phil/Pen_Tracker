@@ -4,9 +4,11 @@ import SwiftUI
 struct PenListView: View {
     @Environment(\.modelContext) private var context
     @State private var pens: [Pen] = []
+    @Binding var path: NavigationPath
 
     var body: some View {
         CollectionListView<Pen, PenRowView, PenEditView, PenDetailView>(
+            path: $path,
             items: $pens,
             refresh: fetchPens,
             navigationTitle: "Pens",

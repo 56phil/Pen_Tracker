@@ -108,8 +108,8 @@ struct CollectionListView<
 
     /// Selects the first visible row and moves keyboard focus into the
     /// list, so arrow keys navigate the rows. Selection here only
-    /// highlights: rows are plain buttons, not navigation links, so
-    /// selecting never pushes the detail screen.
+    /// highlights: a double-click (or Return) is what pushes the detail
+    /// screen, so single-clicking a row never navigates.
     private func selectFirstRow() {
         if let first = visibleItems.first {
             selection = [first.id]
@@ -128,17 +128,16 @@ struct CollectionListView<
     var body: some View {
         List(selection: $selection) {
             ForEach(visibleItems) { item in
-                Button {
-                    pushItem = item
-                } label: {
-                    row(item)
-                }
-                .buttonStyle(.plain)
-                .contextMenu {
-                    Button("Delete", role: .destructive) {
-                        delete(item)
+                row(item)
+                    .contentShape(Rectangle())
+                    .onTapGesture(count: 2) {
+                        pushItem = item
                     }
-                }
+                    .contextMenu {
+                        Button("Delete", role: .destructive) {
+                            delete(item)
+                        }
+                    }
             }
             .onDelete { indexSet in
                 for index in indexSet { context.delete(visibleItems[index]) }

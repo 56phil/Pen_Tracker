@@ -80,6 +80,17 @@ extension CollectionSort where Model: CollectibleItem {
 }
 
 extension CollectionSort where Model == Pen {
+ /// Brand and model together as one key, then the order the pens were
+ /// added. Concatenating the model keeps every pen of the same model
+ /// adjacent and orders V126 ahead of V200, matching what the row shows.
+ static func brand() -> Self {
+  Self(id: "brand", label: "Brand") { lhs, rhs in
+   ordered(
+    "\(lhs.brand) \(lhs.model)", "\(rhs.brand) \(rhs.model)",
+    tieBreak: ascending(lhs.createdAt, rhs.createdAt))
+  }
+ }
+
  /// Pen model name, then brand.
  static func model() -> Self {
   Self(id: "model", label: "Model") { lhs, rhs in

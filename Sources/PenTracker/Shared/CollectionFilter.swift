@@ -44,6 +44,58 @@ extension CollectionFilterGroup where Model: CollectibleItem {
  }
 }
 
+extension CollectionFilterGroup where Model == Pen {
+ /// Nib / tip, one option per exact stored value. Nib strings are free text,
+ /// so the options follow the data rather than a fixed scale: a pen listed as
+ /// "<F>" and one listed as "Fine" are separate options, and no shorthand is
+ /// silently folded into another.
+ static func nib(_ pens: [Pen]) -> Self {
+  let all = CollectionFilterOption<Pen>(id: "all", label: "All") { _ in true }
+  let nibs = valueCounts(pens.map(\.nibSizeOrTip)).map { value, count in
+   CollectionFilterOption<Pen>(id: "nib-\(value)", label: label(value, count)) { pen in
+    pen.nibSizeOrTip == value
+   }
+  }
+  return Self(id: "nib", label: "Nib", options: [all] + nibs)
+ }
+
+ /// Filling mechanism, one option per exact stored value, for the same
+ /// reason as `nib(_:)` — the values are typed by hand, so near-duplicates
+ /// such as "Vaccume" and "Vaccume " stay separate options. Their counts
+ /// differ, which is the only way to tell those two look-alike rows apart.
+ static func fillingMechanism(_ pens: [Pen]) -> Self {
+  let all = CollectionFilterOption<Pen>(id: "all", label: "All") { _ in true }
+  let mechanisms = valueCounts(pens.map(\.fillingMechanism)).map { value, count in
+   CollectionFilterOption<Pen>(
+    id: "filling-\(value)", label: label(value, count)
+   ) { pen in
+    pen.fillingMechanism == value
+   }
+  }
+  return Self(id: "filling", label: "Filling", options: [all] + mechanisms)
+ }
+
+ /// Distinct stored values with how many pens use each, blank values dropped
+ /// and the rest in the same user-facing order the lists sort by.
+ private static func valueCounts(_ values: [String]) -> [(String, Int)] {
+  var counts: [String: Int] = [:]
+  for value in values {
+   guard !value.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else { continue }
+   counts[value, default: 0] += 1
+  }
+  return
+   counts
+   .map { ($0.key, $0.value) }
+   .sorted { ascending($0.0, $1.0) }
+ }
+
+ /// "Fine (7)". The count is not decoration: two values differing only in
+ /// trailing whitespace would otherwise render as identical rows.
+ private static func label(_ value: String, _ count: Int) -> String {
+  "\(value) (\(count))"
+ }
+}
+
 extension CollectionFilterGroup where Model == Ink {
  /// Ink packaging: bottle, sample, or cartridge.
  static func packageType() -> Self {

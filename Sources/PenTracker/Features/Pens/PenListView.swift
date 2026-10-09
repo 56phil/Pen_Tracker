@@ -22,7 +22,9 @@ struct PenListView: View {
             sortOptions: [
                 .brand(), .model(), .rating(), .price(), .purchaseDate(), .dateAdded(),
             ],
-            filterGroups: [.status(), .rating()],
+            filterGroups: [
+                .status(), .rating(), .nib(pens), .fillingMechanism(pens),
+            ],
             row: { pen in PenRowView(pen: pen) },
             addSheet: { PenEditView(pen: nil) },
             detail: { pen in PenDetailView(pen: pen) }

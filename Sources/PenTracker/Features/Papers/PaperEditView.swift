@@ -27,7 +27,7 @@ struct PaperEditView: View {
         NavigationStack {
             Form {
                 Section("Details") {
-                    TextField("Brand", text: $brand)
+                    BrandField(brand: $brand)
                     TextField("Line", text: $lineName)
                     TextField("Format (e.g. A5 Notebook)", text: $format)
                     TextField("Weight (gsm)", text: $weightText)

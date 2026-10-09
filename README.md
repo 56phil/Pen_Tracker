@@ -16,6 +16,7 @@ Built with SwiftUI and SwiftData for macOS 14.0 and later.
 - **Collection statuses**: Wishlist, In Rotation, Stored, Retired. Filter any list by status.
 - **Sorting and filtering**: every Pen, Ink, and Paper list has a Sort menu (brand, model/line/color/weight, rating, price, purchase date, date added) with an ascending/descending toggle, and a Filter menu for collection status, rating (including unrated), and — for inks — package type. Pens sort by brand and model together, so a model's variants stay grouped and order naturally (V126 before V200). Search, filters, and sort combine, and a "No Matches" state appears when nothing fits.
 - **Keyboard-first navigation**: every GUI action is reachable from the keyboard (see below).
+- **Brand suggestions**: the Brand field on every Pen, Ink, and Paper form has a menu of the brands already in the collection, and a **Manage Brands…** screen to rename one spelling into another (for example `Twsbi` into `TWSBI`) or remove every item carrying it.
 
 ## Requirements
 

@@ -10,8 +10,9 @@ struct CollectionSort<Model>: Identifiable {
 }
 
 /// Ascending comparison for user-facing text, so "Ink 2" precedes "Ink 10"
-/// and case or accents do not reshuffle the order.
-private func ascending(_ lhs: String, _ rhs: String) -> Bool {
+/// and case or accents do not reshuffle the order. Shared with the brand
+/// list, which orders brands the same way the collection lists do.
+func ascending(_ lhs: String, _ rhs: String) -> Bool {
  lhs.localizedStandardCompare(rhs) == .orderedAscending
 }
 

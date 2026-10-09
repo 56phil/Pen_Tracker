@@ -26,7 +26,7 @@ struct PenEditView: View {
         NavigationStack {
             Form {
                 Section("Details") {
-                    TextField("Brand", text: $brand)
+                    BrandField(brand: $brand)
                     TextField("Model", text: $model)
                     TextField("Color", text: $color)
                     TextField("Nib / Tip (e.g. Fine, 1.1 Stub)", text: $nibSizeOrTip)

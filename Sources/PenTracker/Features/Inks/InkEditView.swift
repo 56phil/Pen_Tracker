@@ -28,14 +28,16 @@ struct InkEditView: View {
         NavigationStack {
             Form {
                 Section("Details") {
-                    TextField("Brand", text: $brand)
+                    BrandField(brand: $brand)
                     TextField("Line (e.g. Iroshizuku)", text: $lineName)
                     TextField("Color Name", text: $colorName)
                     HStack {
                         TextField("Hex (e.g. 1B4B8A)", text: $colorHex)
                         ColorSwatchView(hex: colorHex, size: 20)
                     }
-                    ArrowPicker("Package", selection: $packageType, options: InkPackageType.allCases) {
+                    ArrowPicker(
+                        "Package", selection: $packageType, options: InkPackageType.allCases
+                    ) {
                         ForEach(InkPackageType.allCases) { p in
                             Text(p.label).tag(p)
                         }
